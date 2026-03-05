@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zigment — US Jewelry Market Entry Feasibility Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0C0C0E;--bg2:#16161A;--bg3:#1E1E24;
+  --white:#FFF;--text:#E8E8E4;--text-s:#8E8E94;--text-d:#555;
+  --accent:#C4421A;--accent-l:#E8503A;--green:#2ECC71;--yellow:#D4A843;--blue:#3B82F6;--red:#E74C3C;
+  --bd:rgba(255,255,255,0.06);
+  --fd:'EB Garamond',Georgia,serif;--fb:'Outfit',-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;padding:40px 24px}
+.deck{max-width:1100px;margin:0 auto}
+.slide{background:var(--bg2);border:1px solid var(--bd);border-radius:20px;padding:56px;margin-bottom:32px;position:relative;overflow:hidden}
+.slide::before{content:'';position:absolute;top:-30%;right:-15%;width:400px;height:400px;background:radial-gradient(circle,rgba(196,66,26,0.03) 0%,transparent 60%);pointer-events:none}
+.deck-header{text-align:center;margin-bottom:48px}
+.deck-header h1{font-family:var(--fd);font-size:44px;font-weight:400;margin-bottom:8px}
+.deck-header h1 em{font-style:italic;color:var(--accent-l)}
+.deck-sub{font-size:14px;color:var(--text-s)}
+.deck-meta{display:flex;justify-content:center;gap:24px;margin-top:16px}
+.deck-meta span{font-size:12px;font-weight:600;color:var(--text-d);text-transform:uppercase;letter-spacing:.08em}
+.s-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-l);margin-bottom:20px}
+.s-title{font-family:var(--fd);font-size:30px;font-weight:400;margin-bottom:8px;line-height:1.2}
+.s-title em{font-style:italic;color:var(--accent-l)}
+.s-desc{font-size:14px;color:var(--text-s);margin-bottom:32px;max-width:700px;line-height:1.6}
+
+/* SCORE CARD */
+.score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.score-card{background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:24px 20px;text-align:center}
+.score-dim{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-s);margin-bottom:12px}
+.score-val{font-family:var(--fd);font-size:48px;line-height:1;margin-bottom:4px}
+.score-max{font-size:12px;color:var(--text-d)}
+.score-bar{height:6px;border-radius:3px;background:var(--bg);margin-top:12px;overflow:hidden}
+.score-fill{height:100%;border-radius:3px}
+
+.score-total{background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}
+.score-total-label{font-size:14px;font-weight:600;color:var(--text-s)}
+.score-total-val{font-family:var(--fd);font-size:36px}
+.score-total-verdict{font-size:14px;font-weight:600;padding:6px 16px;border-radius:100px}
+
+/* RTW */
+.rtw-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.rtw-card{background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:28px 24px}
+.rtw-card h3{font-size:15px;font-weight:700;margin-bottom:8px}
+.rtw-card.strong{border-left:3px solid var(--green)}
+.rtw-card.weak{border-left:3px solid var(--red)}
+.rtw-card.strong h3{color:var(--green)}
+.rtw-card.weak h3{color:var(--red)}
+.rtw-card p{font-size:13px;color:var(--text-s);line-height:1.6}
+
+/* BARRIERS */
+.barrier{background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:28px 28px;margin-bottom:16px;display:grid;grid-template-columns:48px 1fr 200px;gap:20px;align-items:start}
+.barrier:last-child{margin-bottom:0}
+.b-num{font-family:var(--fd);font-size:36px;color:var(--accent-l);line-height:1}
+.b-content h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.b-content p{font-size:13px;color:var(--text-s);line-height:1.6}
+.b-cost{text-align:right}
+.b-cost-val{font-family:var(--fd);font-size:24px;color:var(--yellow);line-height:1;margin-bottom:2px}
+.b-cost-label{font-size:11px;color:var(--text-d);text-transform:uppercase;letter-spacing:.04em}
+.b-cost-time{font-size:12px;color:var(--text-s);margin-top:4px}
+
+/* GAPS */
+.gap-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.gap-card{background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:24px 20px}
+.gap-card h3{font-size:14px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.gap-card p{font-size:13px;color:var(--text-s);line-height:1.55}
+.gap-card .fix{margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);font-size:12px;font-weight:600;color:var(--yellow)}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:32px;margin-bottom:32px}
+.tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--bd)}
+.tl-item{position:relative;margin-bottom:24px}
+.tl-item:last-child{margin-bottom:0}
+.tl-item::before{content:'';position:absolute;left:-28px;top:6px;width:12px;height:12px;border-radius:50%;border:2px solid var(--accent-l);background:var(--bg2)}
+.tl-item.active::before{background:var(--accent-l)}
+.tl-period{font-size:12px;font-weight:700;color:var(--accent-l);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.tl-title{font-size:15px;font-weight:600;margin-bottom:4px}
+.tl-desc{font-size:13px;color:var(--text-s);line-height:1.55}
+.tl-metric{display:inline-block;margin-top:6px;font-size:12px;font-weight:600;color:var(--yellow);background:rgba(212,168,67,0.1);padding:3px 10px;border-radius:4px}
+
+/* KILL CRITERIA */
+.kill{background:rgba(231,76,60,0.06);border:1px solid rgba(231,76,60,0.15);border-radius:14px;padding:24px 28px;margin-bottom:12px;display:grid;grid-template-columns:32px 1fr;gap:16px;align-items:start}
+.kill:last-child{margin-bottom:0}
+.kill-icon{font-size:20px;margin-top:2px}
+.kill h3{font-size:14px;font-weight:700;color:var(--red);margin-bottom:4px}
+.kill p{font-size:13px;color:var(--text-s);line-height:1.55}
+.kill .trigger{font-size:12px;font-weight:600;color:var(--red);margin-top:6px}
+
+/* VERDICT */
+.verdict{background:rgba(196,66,26,0.06);border:1px solid rgba(196,66,26,0.15);border-radius:14px;padding:32px;margin-top:24px}
+.verdict h3{font-family:var(--fd);font-size:24px;margin-bottom:12px;color:var(--accent-l)}
+.verdict p{font-size:14px;color:var(--text-s);line-height:1.7;margin-bottom:12px}
+.verdict p:last-child{margin-bottom:0}
+.verdict strong{color:var(--text)}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+
+@media(max-width:768px){
+  .slide{padding:32px 24px}
+  .score-grid{grid-template-columns:1fr 1fr}
+  .rtw-grid,.two-col,.gap-row{grid-template-columns:1fr}
+  .barrier{grid-template-columns:1fr;gap:12px}
+  .b-cost{text-align:left}
+  .deck-header h1{font-size:32px}
+}
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+<!-- TITLE -->
+<div class="deck-header">
+  <h1>US Jewelry Market Entry — <em>Feasibility Analysis</em></h1>
+  <div class="deck-sub">Should Zigment invest in this market? A structured assessment.</div>
+  <div class="deck-meta">
+    <span>Prepared: Feb 2026</span>
+    <span>Framework: Market Entry Feasibility</span>
+    <span>Status: Go / Conditional</span>
+  </div>
+</div>
+
+<!-- SLIDE 1: MARKET ATTRACTIVENESS -->
+<div class="slide">
+  <div class="s-label">1. Market Attractiveness Score</div>
+  <div class="s-title">Scoring the opportunity — <em>honestly</em></div>
+
+  <div class="score-grid">
+    <div class="score-card">
+      <div class="score-dim">Market Size</div>
+      <div class="score-val" style="color:var(--green)">8</div>
+      <div class="score-max">/ 10</div>
+      <div class="score-bar"><div class="score-fill" style="width:80%;background:var(--green)"></div></div>
+      <p style="font-size:12px;color:var(--text-s);margin-top:10px;line-height:1.4">$78.9B US jewelry market. $16.8B online. SAM of $180–280M for Zigment's target segment. Substantial.</p>
+    </div>
+    <div class="score-card">
+      <div class="score-dim">Growth Rate</div>
+      <div class="score-val" style="color:var(--yellow)">7</div>
+      <div class="score-max">/ 10</div>
+      <div class="score-bar"><div class="score-fill" style="width:70%;background:var(--yellow)"></div></div>
+      <p style="font-size:12px;color:var(--text-s);margin-top:10px;line-height:1.4">Jewelry market: 4.1% CAGR. Online jewelry: ~7.8% CAGR. Conversational AI: 23.7% CAGR. The enabler is growing faster than the base.</p>
+    </div>
+    <div class="score-card">
+      <div class="score-dim">Profitability</div>
+      <div class="score-val" style="color:var(--green)">9</div>
+      <div class="score-max">/ 10</div>
+      <div class="score-bar"><div class="score-fill" style="width:90%;background:var(--green)"></div></div>
+      <p style="font-size:12px;color:var(--text-s);margin-top:10px;line-height:1.4">Per-conversation pricing at $1–2 with near-zero marginal cost. 80%+ gross margins. High AOV clients = high willingness to pay. Exceptional unit economics.</p>
+    </div>
+    <div class="score-card">
+      <div class="score-dim">Competitive Intensity</div>
+      <div class="score-val" style="color:var(--yellow)">5</div>
+      <div class="score-max">/ 10</div>
+      <div class="score-bar"><div class="score-fill" style="width:50%;background:var(--yellow)"></div></div>
+      <p style="font-size:12px;color:var(--text-s);margin-top:10px;line-height:1.4">Crowded chatbot market (Tidio, Gorgias, LivePerson, Rep AI, ManyChat). But none are doing what Zigment does: omnichannel conversational <em>selling</em> with persistent context. Competition is for support, not sales.</p>
+    </div>
+  </div>
+
+  <div class="score-total">
+    <div class="score-total-label">Composite Market Attractiveness</div>
+    <div class="score-total-val" style="color:var(--green)">7.3 / 10</div>
+    <div class="score-total-verdict" style="background:rgba(46,204,113,0.12);color:var(--green)">Attractive — Proceed with conditions</div>
+  </div>
+
+  <div class="s-desc" style="margin-bottom:0">
+    <strong style="color:var(--text)">Analyst note:</strong> The market is structurally attractive. The 0.94% conversion rate for luxury e-commerce and 80% cart abandonment rate represent a $12–15B annual value leak in US jewelry alone. The question isn't whether the market needs a solution — it's whether Zigment is the right one to provide it in the US, without a local case study, against incumbents who already have shelf space.
+  </div>
+</div>
+
+<!-- SLIDE 2: RIGHT TO WIN -->
+<div class="slide">
+  <div class="s-label">2. Right to Win Assessment</div>
+  <div class="s-title">What makes Zigment credible here? <em>An honest look.</em></div>
+  <div class="s-desc">The answer is not "nothing" — but it's also not "everything." You have genuine technical differentiation. You lack market-specific proof.</div>
+
+  <div class="rtw-grid">
+    <div class="rtw-card strong">
+      <h3>✓ Conversation Graph is real differentiation</h3>
+      <p>No US competitor offers persistent cross-channel context that follows a customer from Instagram DM → SMS → web → store. Tidio, Gorgias, LivePerson, ManyChat — all are single-channel or stateless. This isn't a feature gap; it's an architectural advantage that's hard to replicate.</p>
+    </div>
+    <div class="rtw-card strong">
+      <h3>✓ Proven ROAS in same vertical</h3>
+      <p>BlueStone — a real jewelry brand with a real $600 AOV — at 10–20× ROAS. Not a demo. Not a simulation. Not a different vertical. Same product category, same customer psychology. The use case translates even if the channel differs.</p>
+    </div>
+    <div class="rtw-card strong">
+      <h3>✓ TCPA compliance already solved</h3>
+      <p>Give.org deployment on toll-free SMS proves you can operate in the US regulatory environment. Most India-born AI companies stumble here. You've already cleared the hurdle.</p>
+    </div>
+    <div class="rtw-card strong">
+      <h3>✓ Multi-channel from Day 1</h3>
+      <p>Instagram DMs, SMS, web chat, WhatsApp, email — all live, all carrying context. US jewelry needs this because there's no single dominant messaging channel (unlike India's WhatsApp). Your omnichannel capability is a US-market necessity, not a nice-to-have.</p>
+    </div>
+    <div class="rtw-card weak">
+      <h3>✗ No US jewelry case study</h3>
+      <p>BlueStone is India + WhatsApp. US buyers, agencies, and investors will ask: "Does this work with American consumers on Instagram and SMS?" You can't answer that yet. This is the single biggest credibility gap.</p>
+    </div>
+    <div class="rtw-card weak">
+      <h3>✗ No US sales infrastructure</h3>
+      <p>An SF investor doing 6–8 hrs/week and founder visits 3–4x/year is not a sales team. For enterprise/mid-market B2B SaaS in the US, you need someone who can do lunches, QBRs, and "let me walk you through the dashboard" calls in US time zones.</p>
+    </div>
+    <div class="rtw-card weak">
+      <h3>✗ No US brand recognition</h3>
+      <p>Zigment has zero presence in the US conversational AI discourse — no G2 reviews, no Gartner/Forrester mention, no case study on any US marketing blog. You're starting from zero awareness in a market flooded with AI vendors.</p>
+    </div>
+    <div class="rtw-card weak">
+      <h3>✗ Pricing is unvalidated in US</h3>
+      <p>$0.30/conversation works in India. US pricing of $1–2/conversation is hypothesized, not tested. If US jewelry brands are already paying $0.50/conversation for Tidio or getting "free" chatbots from Shopify apps, your pricing power is unknown.</p>
+    </div>
+  </div>
+
+  <div class="verdict" style="margin-top:24px">
+    <h3>Right-to-Win Verdict: Conditional.</h3>
+    <p>You have a <strong>genuine technical moat</strong> (Conversation Graph) and <strong>relevant vertical proof</strong> (BlueStone). This puts you ahead of "nothing." But technical superiority without local proof and local presence doesn't close enterprise deals in the US. The right to win exists but must be earned in the first 6 months with 2–3 US pilot wins.</p>
+  </div>
+</div>
+
+<!-- SLIDE 3: BARRIERS -->
+<div class="slide">
+  <div class="s-label">3. Top 3 Barriers to Entry</div>
+  <div class="s-title">What stands between you and <em>revenue</em></div>
+
+  <div class="barrier">
+    <div class="b-num">1</div>
+    <div class="b-content">
+      <h3>The "Show Me US Results" Problem</h3>
+      <p>Every prospect, agency, and investor will say the same thing: "BlueStone is India. Show me this working with a US jewelry brand, on US channels, with US consumers." Until you have one US case study with named brand, real ROAS numbers, and publishable testimonial — you're selling a hypothesis, not a product. This is the #1 barrier because it gates everything else: agency partnerships, pricing confidence, content marketing, and investor conviction.</p>
+    </div>
+    <div class="b-cost">
+      <div class="b-cost-val">$50–80K</div>
+      <div class="b-cost-label">Cost to overcome</div>
+      <div class="b-cost-time">3–6 months (subsidized pilot + ad spend co-investment for 1–2 brands)</div>
+    </div>
+  </div>
+
+  <div class="barrier">
+    <div class="b-num">2</div>
+    <div class="b-content">
+      <h3>The Sales Presence Gap</h3>
+      <p>US mid-market B2B SaaS deals ($10–15K/month) require relationship selling. Agencies want a partner they can call. Brand VPs want a QBR with screen-sharing in their timezone. An SF investor at 6–8 hrs/week + quarterly founder visits ≠ a sales function. You need at minimum: (a) one full-time US-based BD/sales person, or (b) a formal agency partner program with co-selling motions that compensate for no local team.</p>
+    </div>
+    <div class="b-cost">
+      <div class="b-cost-val">$150–200K</div>
+      <div class="b-cost-label">Annual cost</div>
+      <div class="b-cost-time">1 US-based AE ($120–150K OTE) + travel/event budget ($30–50K)</div>
+    </div>
+  </div>
+
+  <div class="barrier">
+    <div class="b-num">3</div>
+    <div class="b-content">
+      <h3>The "AI Fatigue" Filter</h3>
+      <p>US jewelry brands receive 5–10 AI vendor pitches per week. Their default reaction is to ignore. You're competing for mindshare against Tidio (300K+ users), Gorgias (Shopify native), LivePerson (public company), and dozens of "AI chatbot" startups. Your differentiation (Conversation Graph, omnichannel context) is real but hard to convey in a cold email. Breaking through the noise requires either: (a) a warm intro from a trusted party, or (b) a content/thought-leadership strategy that earns attention organically.</p>
+    </div>
+    <div class="b-cost">
+      <div class="b-cost-val">$60–100K</div>
+      <div class="b-cost-label">Annual cost</div>
+      <div class="b-cost-time">Content marketing ($3–5K/mo) + 2–3 conference appearances ($15–20K each) + agency partnership program setup</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: CAPABILITY GAPS -->
+<div class="slide">
+  <div class="s-label">4. Required Capabilities & Partnerships You Don't Have</div>
+  <div class="s-title">What you need to <em>build, buy, or borrow</em></div>
+
+  <div class="gap-row">
+    <div class="gap-card">
+      <h3>US Agency Partner (Critical)</h3>
+      <p>You need 1–2 performance marketing agencies with active jewelry clients to co-sell. They provide: client access, trust transfer, ad account management, and ongoing QBR presence.</p>
+      <div class="fix">Fix: Formalize a partner program with rev-share. Target Logical Position, Common Thread Collective, or a boutique jewelry-specialist agency. 60-day timeline.</div>
+    </div>
+    <div class="gap-card">
+      <h3>Shopify Plus Integration (Important)</h3>
+      <p>80%+ of US D2C jewelry brands run on Shopify Plus. Without a native Shopify app or deep integration (catalog sync, order data, checkout attribution), you can't prove ROAS end-to-end.</p>
+      <div class="fix">Fix: Build a Shopify Plus integration. 4–8 week engineering sprint. List on Shopify App Store for discovery.</div>
+    </div>
+    <div class="gap-card">
+      <h3>Instagram DM API Expertise (Important)</h3>
+      <p>Instagram DMs are the most direct CTWA equivalent in the US. Meta's IG Messaging API has specific approval requirements, rate limits, and UX constraints. You need battle-tested implementation.</p>
+      <div class="fix">Fix: If not already built, prioritize IG DM channel to production-grade quality. Test with 1 US brand before scaling. 4–6 week effort.</div>
+    </div>
+  </div>
+  <div class="gap-row">
+    <div class="gap-card">
+      <h3>US-Localized Brand Voice Training (Important)</h3>
+      <p>American jewelry consumers have different conversational norms than Indian consumers. Tone, humor, urgency, and objection patterns differ. Your AI needs to sound like a Nordstrom associate, not a helpful chatbot.</p>
+      <div class="fix">Fix: Work with first US pilot to co-develop brand voice library. Record real in-store sales conversations as training data. 30-day effort per brand.</div>
+    </div>
+    <div class="gap-card">
+      <h3>G2/Gartner/Review Presence (Nice-to-have)</h3>
+      <p>US B2B buyers validate via G2, Capterra, and analyst reports. Zero reviews = zero credibility in procurement-led deals. Less critical for founder-led and agency-referred deals.</p>
+      <div class="fix">Fix: Seed 5–10 G2 reviews from existing clients (India OK). Apply for Gartner Cool Vendor consideration. 90-day effort.</div>
+    </div>
+    <div class="gap-card">
+      <h3>US Payment/Billing Infrastructure (Operational)</h3>
+      <p>US clients expect USD invoicing, net-30 terms, and integration with their AP systems. Wire transfers from India create friction and compliance questions.</p>
+      <div class="fix">Fix: US entity (if not already), Stripe billing, and standard SaaS contract templates. One-time setup, 30 days.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: BREAK-EVEN TIMELINE -->
+<div class="slide">
+  <div class="s-label">5. Break-Even Timeline — Realistic Scenario</div>
+  <div class="s-title">When does US jewelry <em>pay for itself?</em></div>
+  <div class="s-desc">Assumes $260–380K total US market investment in Year 1 (1 US hire + subsidized pilots + marketing). Does NOT assume best-case; assumes moderate friction and normal sales cycles.</div>
+
+  <div class="two-col">
+    <div>
+      <div class="tl">
+        <div class="tl-item active">
+          <div class="tl-period">Months 1–3: Foundation</div>
+          <div class="tl-title">Build infrastructure, sign first pilot</div>
+          <div class="tl-desc">Shopify integration, IG DM channel hardening, agency outreach, 1 subsidized US pilot (likely via SF investor warm intro). Revenue: near zero.</div>
+          <div class="tl-metric">Revenue: $0–5K/mo | Clients: 0–1 | Burn: $25K/mo</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-period">Months 4–6: Proof Phase</div>
+          <div class="tl-title">First US case study + 1 agency partner</div>
+          <div class="tl-desc">First pilot produces publishable ROAS data. Begin content marketing. Sign first agency partnership. 2–3 additional pilots in pipeline.</div>
+          <div class="tl-metric">Revenue: $10–25K/mo | Clients: 2–4 | Burn: $25K/mo</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-period">Months 7–12: Scale Phase</div>
+          <div class="tl-title">Agency channel activates, direct sales pipeline builds</div>
+          <div class="tl-desc">Agency partners bringing 2–3 clients each. Direct outreach converting with US case study. Conference presence. Pricing validated.</div>
+          <div class="tl-metric">Revenue: $40–80K/mo | Clients: 8–15 | Burn: $30K/mo</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-period">Month 13–18: Breakeven Zone</div>
+          <div class="tl-title">US operation self-sustaining</div>
+          <div class="tl-desc">15–25 active clients. US revenue covers US costs. Begin investing in expansion beyond jewelry.</div>
+          <div class="tl-metric">Revenue: $80–150K/mo | Clients: 15–25 | Breakeven: ~Month 14–16</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:28px 24px;margin-bottom:16px">
+        <div style="font-size:12px;font-weight:700;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px">Financial Summary — Year 1</div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd);font-size:14px"><span style="color:var(--text-s)">Total US investment (Year 1)</span><span style="font-weight:600;color:var(--red)">$300–380K</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd);font-size:14px"><span style="color:var(--text-s)">Cumulative revenue (Year 1)</span><span style="font-weight:600;color:var(--green)">$250–500K</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd);font-size:14px"><span style="color:var(--text-s)">Year 1 P&L (US only)</span><span style="font-weight:600;color:var(--yellow)">-$50K to +$120K</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:14px"><span style="color:var(--text-s)">Break-even month (realistic)</span><span style="font-weight:600;color:var(--text)">Month 14–16</span></div>
+      </div>
+
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:28px 24px">
+        <div style="font-size:12px;font-weight:700;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px">Key Sensitivities</div>
+        <div style="font-size:13px;color:var(--text-s);line-height:1.6;margin-bottom:8px"><strong style="color:var(--text)">If pricing holds at $1.50/conv:</strong> Breakeven at Month 12. Strong outcome.</div>
+        <div style="font-size:13px;color:var(--text-s);line-height:1.6;margin-bottom:8px"><strong style="color:var(--text)">If pricing compresses to $0.50/conv:</strong> Breakeven pushed to Month 22+. Requires re-evaluation at Month 9.</div>
+        <div style="font-size:13px;color:var(--text-s);line-height:1.6;margin-bottom:8px"><strong style="color:var(--text)">If agency channel doesn't activate:</strong> Max ~8–10 direct clients by Month 12. Breakeven at Month 18–20.</div>
+        <div style="font-size:13px;color:var(--text-s);line-height:1.6"><strong style="color:var(--text)">If first pilot fails to show &gt;5× ROAS:</strong> Entire thesis is challenged. See Kill Criteria.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: KILL CRITERIA -->
+<div class="slide">
+  <div class="s-label">6. Kill Criteria — When to Stop</div>
+  <div class="s-title">These signals should make you <em>exit.</em></div>
+  <div class="s-desc">You asked for this, and it's the most valuable section. Markets are littered with startups that kept investing past the point of evidence. Define your exit signals now, while you're thinking clearly.</div>
+
+  <div class="kill">
+    <div class="kill-icon">🔴</div>
+    <div>
+      <h3>Kill Signal 1: Pilot ROAS below 3× after 60 days</h3>
+      <p>If your first US pilot — with full support, optimized brand voice, and co-invested ad spend — can't produce at least 3× ROAS within 60 days, the BlueStone results don't transfer to US channels. The fundamental thesis (conversational selling works for US jewelry) is invalidated.</p>
+      <div class="trigger">Trigger: ROAS &lt; 3× at Day 60 of first US pilot → Pause all US investment. Diagnose root cause. If not fixable in 30 days, exit.</div>
+    </div>
+  </div>
+
+  <div class="kill">
+    <div class="kill-icon">🔴</div>
+    <div>
+      <h3>Kill Signal 2: Zero paying clients after 6 months</h3>
+      <p>If after 6 months of active effort — with SF investor, founder visits, agency outreach, and 1–2 pilots — you have zero clients converted from pilot to paid, the market isn't rejecting your technology; it's rejecting your GTM. And fixing GTM in a market you don't live in is extremely expensive.</p>
+      <div class="trigger">Trigger: 0 paying US clients at Month 6 → Halt spend. Evaluate whether the problem is product-market fit, pricing, or GTM. If it's GTM, consider acqui-hiring a US-based co-founder or team before proceeding.</div>
+    </div>
+  </div>
+
+  <div class="kill">
+    <div class="kill-icon">🔴</div>
+    <div>
+      <h3>Kill Signal 3: US pricing compresses below $0.50/conversation</h3>
+      <p>If US brands anchor to Tidio pricing ($0.50/conversation for Lyro) or expect "free" chatbot-tier pricing, your unit economics don't work. At $0.50/conv with US cost structure, you need 3–4× the volume per client to break even — and jewelry doesn't have that volume. The India-pricing-×-3-for-US model collapses.</p>
+      <div class="trigger">Trigger: 3+ prospects or agencies push back on pricing above $0.75/conv → Re-evaluate value proposition and pricing model. Consider per-conversion or revenue-share pricing instead.</div>
+    </div>
+  </div>
+
+  <div class="kill">
+    <div class="kill-icon">🟡</div>
+    <div>
+      <h3>Caution Signal: Agency partnerships stall beyond Month 9</h3>
+      <p>If no agency has signed a formal partnership and deployed to at least 1 client by Month 9, the channel strategy isn't working. This doesn't kill the market — but it means you're running a direct sales motion only, which is 3× slower and more expensive. Re-assess headcount and burn.</p>
+      <div class="trigger">Trigger: 0 active agency deployments at Month 9 → Shift budget from agency GTM to direct outbound. Consider hiring a 2nd US AE focused on direct brand sales.</div>
+    </div>
+  </div>
+
+  <div class="kill">
+    <div class="kill-icon">🟡</div>
+    <div>
+      <h3>Caution Signal: Cumulative US burn exceeds $200K with &lt;$50K revenue</h3>
+      <p>This is a financial guardrail. If you've spent $200K and generated less than $50K, the ROI trajectory is dangerous for a startup. Not an automatic kill — but requires a board-level conversation about whether continued investment is justified by leading indicators (pipeline, pilot results, LOIs).</p>
+      <div class="trigger">Trigger: Review at the $200K burn mark. If pipeline value &lt; 3× burn → escalate to board.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: FINAL RECOMMENDATION -->
+<div class="slide">
+  <div class="s-label">Final Recommendation</div>
+  <div class="s-title">Proceed — but with <em>staged commitment</em></div>
+
+  <div class="verdict">
+    <h3>Verdict: Conditional Go. Not a blank check.</h3>
+    <p>This is <strong>not a bad idea.</strong> The market is structurally attractive, your differentiation is real, and the BlueStone proof is more than most startups enter new markets with. The jewelry vertical has a genuine, quantifiable pain point (sub-1% conversion, 80% cart abandonment) that your Conversation Graph is architecturally positioned to solve.</p>
+    <p>But it is a <strong>$300K bet that needs staged gates.</strong> Do not invest the full amount upfront. Structure it in three phases:</p>
+    <p><strong>Phase 1 (Months 1–3, ~$75K):</strong> Get one US pilot live. This is the "minimum viable entry." If the pilot fails, you've spent $75K to learn the market isn't ready — not $300K. Your SF investor should be sourcing the first pilot NOW, before you commit additional capital.</p>
+    <p><strong>Phase 2 (Months 4–6, ~$75K):</strong> Publish the case study. Sign one agency. If both happen, you've validated GTM. If neither happens, invoke Kill Signal 2 and re-assess.</p>
+    <p><strong>Phase 3 (Months 7–12, ~$150K):</strong> Scale. Hire the US AE. Invest in conferences and content. This phase only unlocks if Phase 1 and 2 produce evidence.</p>
+    <p><strong>The single most important thing you can do in the next 30 days:</strong> Get one US jewelry brand — any size, even small — to run a 30-day pilot on Instagram DMs or SMS. Everything else is contingent on that result. If your SF investor can't source one pilot introduction in 30 days, that itself is a signal about your US GTM readiness.</p>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+</body>
+</html>

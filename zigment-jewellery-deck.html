@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Zigment — Jewellery Sales Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#0C0C0E}
+:root{--gold:#B8860B;--gold-light:#D4A843;--gold-dim:rgba(184,134,11,.15);--green:#1A7A4C;--green-light:#22A366;--blue:#2563EB;--red:#ef4444;--dark:#0C0C0E;--dark-2:#16161A;--warm-white:#FCFCFA;--warm-gray:#F6F5F0;--text-primary:#111;--text-secondary:#555;--text-tertiary:#999;--text-light:#E8E8E4;--text-muted-light:#9A9A96;--border:#E4E3DE;--font-display:'EB Garamond',Georgia,serif;--font-body:'Outfit',-apple-system,sans-serif}
+.deck{width:100vw;height:100vh;position:relative}
+.slide{position:absolute;top:0;left:0;width:100vw;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:72px 120px;opacity:0;pointer-events:none;transition:opacity .6s ease;overflow:hidden}
+.slide.active{opacity:1;pointer-events:all}
+.slide--dark{background:var(--dark);color:var(--text-light)}
+.slide--dark-2{background:var(--dark-2);color:var(--text-light)}
+.slide--light{background:var(--warm-white);color:var(--text-primary)}
+.slide--warm{background:var(--warm-gray);color:var(--text-primary)}
+h1,h2,h3{font-family:var(--font-display);font-weight:400;line-height:1.15}
+h1{font-size:64px;letter-spacing:-.5px}h2{font-size:46px;letter-spacing:-.3px}h3{font-size:36px}
+p,li,td,th,span,div{font-family:var(--font-body)}p{font-size:20px;line-height:1.6}
+em{font-family:var(--font-display);font-style:italic}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.slide.active .reveal{opacity:1;transform:translateY(0)}
+.slide.active .reveal.d1{transition-delay:.15s}.slide.active .reveal.d2{transition-delay:.3s}.slide.active .reveal.d3{transition-delay:.45s}.slide.active .reveal.d4{transition-delay:.6s}.slide.active .reveal.d5{transition-delay:.75s}.slide.active .reveal.d6{transition-delay:.9s}
+.nav{position:fixed;bottom:32px;right:40px;display:flex;align-items:center;gap:16px;z-index:100;opacity:0;transition:opacity .3s}.deck:hover .nav{opacity:1}
+.nav-btn{width:44px;height:44px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.4);backdrop-filter:blur(10px);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:#fff;font-size:18px}.nav-btn:hover{background:var(--gold);border-color:var(--gold)}
+.nav-counter{font-family:var(--font-body);font-size:13px;color:rgba(255,255,255,.5);font-weight:500;min-width:50px;text-align:center}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);transition:width .5s ease;z-index:100}
+.tag{display:inline-block;font-family:var(--font-body);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:2px;padding:6px 14px;border-radius:3px;margin-bottom:24px}
+.tag--gold{background:var(--gold-dim);color:var(--gold-light)}
+.tag--dark{background:rgba(255,255,255,.08);color:var(--text-muted-light)}
+.tag--light{background:rgba(0,0,0,.06);color:var(--text-secondary)}
+.slide--light .tag--gold{background:rgba(184,134,11,.08);color:var(--gold)}
+.subtitle{font-family:var(--font-body);font-size:20px;font-weight:300;line-height:1.6;max-width:700px}
+.slide--dark .subtitle{color:var(--text-muted-light)}.slide--light .subtitle{color:var(--text-secondary)}
+
+/* COVER */
+.cover{justify-content:center;align-items:center;text-align:center;position:relative}
+.cover::before{content:'';position:absolute;top:-40%;left:-20%;width:140%;height:140%;background:radial-gradient(ellipse at 30% 50%,rgba(184,134,11,.06) 0%,transparent 55%),radial-gradient(ellipse at 70% 60%,rgba(212,168,67,.03) 0%,transparent 45%);pointer-events:none}
+.cover-logo{font-family:var(--font-body);font-size:18px;font-weight:600;letter-spacing:8px;text-transform:uppercase;color:var(--text-muted-light);margin-bottom:48px}
+.cover h1{font-size:72px;max-width:950px;margin-bottom:24px;line-height:1.08}.cover h1 em{color:var(--gold-light)}
+.cover-footer{position:absolute;bottom:48px;left:0;right:0;text-align:center;font-family:var(--font-body);font-size:14px;color:var(--text-muted-light);letter-spacing:1px}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;margin-top:32px;max-width:860px}
+.ti{display:flex;align-items:flex-start;gap:20px;padding:14px 0;border-left:2px solid rgba(255,255,255,.06);padding-left:28px;position:relative}
+.ti::before{content:'';position:absolute;left:-5px;top:20px;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.ti--end::before{background:var(--red);width:10px;height:10px;left:-6px}
+.ti-time{font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--text-muted-light);min-width:145px;flex-shrink:0;padding-top:2px}
+.ti-ch{display:inline-block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;padding:3px 7px;border-radius:3px;background:rgba(255,255,255,.06);color:var(--text-muted-light);margin-right:6px}
+.ti-body{flex:1}
+.ti-action{font-family:var(--font-body);font-size:15px;color:var(--text-light);line-height:1.45}
+.ti-result{font-family:var(--font-body);font-size:12px;color:var(--gold-light);font-weight:500;font-style:italic;margin-top:2px}
+.ti-result--red{color:var(--red);font-weight:600}
+
+/* FAILURES */
+.failures{display:flex;flex-direction:column;gap:18px;margin-top:40px;max-width:1050px}
+.f{display:flex;align-items:flex-start;gap:20px;padding:24px 28px;border-radius:14px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
+.f-icon{font-size:26px;flex-shrink:0;padding-top:2px}
+.f-body{flex:1}
+.f-title{font-family:var(--font-display);font-size:22px;color:var(--text-light);margin-bottom:5px}
+.f-desc{font-family:var(--font-body);font-size:14px;color:var(--text-muted-light);line-height:1.5}
+.f-tag{display:inline-block;font-family:var(--font-body);font-size:11px;font-weight:600;padding:4px 10px;border-radius:4px;background:rgba(239,68,68,.08);color:rgba(239,68,68,.7);margin-top:8px}
+.gap-box{margin-top:28px;padding:20px 28px;border-radius:14px;border:1px solid rgba(184,134,11,.2);background:rgba(184,134,11,.04);max-width:1050px}
+.gap-text{font-family:var(--font-display);font-size:24px;color:var(--gold-light);line-height:1.3}
+
+/* FLOW */
+.flow{display:flex;align-items:stretch;margin-top:36px;max-width:1200px}
+.flow-step{flex:1;padding:24px 18px;position:relative;text-align:center;display:flex;flex-direction:column;align-items:center}
+.flow-step::after{content:'\2192';position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--gold);font-family:var(--font-body);z-index:2}.flow-step:last-child::after{display:none}
+.flow-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:10px}
+.flow-icon--gold{background:rgba(184,134,11,.1)}.flow-icon--green{background:rgba(26,122,76,.1)}.flow-icon--blue{background:rgba(37,99,235,.1)}
+.flow-title{font-family:var(--font-display);font-size:17px;color:var(--text-primary);margin-bottom:5px}
+.flow-desc{font-family:var(--font-body);font-size:12px;color:var(--text-secondary);line-height:1.45}
+
+/* SCENARIOS */
+.scenarios{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:32px;max-width:1200px}
+.sc{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.04)}
+.sc-header{padding:16px 20px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.sc-ch{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;font-family:var(--font-body);padding:3px 8px;border-radius:4px}
+.sc-ch--wa{background:#E8F5E9;color:#2E7D32}.sc-ch--ig{background:#FCE4EC;color:#C2185B}.sc-ch--sms{background:#FFF8E1;color:#F57F17}
+.sc-time{font-family:var(--font-body);font-size:12px;color:var(--text-tertiary);font-weight:500}
+.sc-body{padding:16px 20px}
+.sc-label{font-family:var(--font-display);font-size:17px;color:var(--text-primary);margin-bottom:8px}
+.sc-msg{font-family:var(--font-body);font-size:13px;line-height:1.55;color:var(--text-secondary);margin-bottom:12px}
+.sc-result{display:flex;align-items:center;gap:6px;padding:8px 12px;background:rgba(184,134,11,.06);border-radius:6px;font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--gold)}.sc-result::before{content:'\2713';font-weight:700}
+
+/* CONTEXT COMPARE */
+.ctx-compare{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:36px;max-width:1100px}
+.ctx-col{padding:32px 28px;border-radius:14px}
+.ctx-col--without{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06)}
+.ctx-col--with{background:rgba(184,134,11,.04);border:1px solid rgba(184,134,11,.2)}
+.ctx-label{font-family:var(--font-body);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px}
+.ctx-col--without .ctx-label{color:var(--text-muted-light)}
+.ctx-col--with .ctx-label{color:var(--gold-light)}
+.ctx-msg{font-family:var(--font-body);font-size:14px;line-height:1.7;color:var(--text-muted-light);padding:12px 16px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:10px;border-left:3px solid}
+.ctx-col--without .ctx-msg{border-color:rgba(255,255,255,.08)}
+.ctx-col--with .ctx-msg{border-color:rgba(184,134,11,.3);color:var(--text-light)}
+.ctx-col--with .ctx-msg em{color:var(--gold-light)}
+.ctx-outcome{font-family:var(--font-body);font-size:12px;font-weight:600;margin-top:14px;padding:8px 12px;border-radius:6px;display:inline-block}
+.ctx-outcome--bad{background:rgba(239,68,68,.08);color:rgba(239,68,68,.7)}
+.ctx-outcome--good{background:rgba(184,134,11,.1);color:var(--gold-light)}
+
+/* ICEBERG */
+.iceberg-layout{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:28px;max-width:1200px}
+.iceberg-above{background:rgba(184,134,11,.04);border:1px solid rgba(184,134,11,.15);border-radius:14px;padding:32px 28px}
+.iceberg-below{background:rgba(0,0,0,.03);border:1px solid var(--border);border-radius:14px;padding:32px 28px}
+.iceberg-section-label{font-family:var(--font-body);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.iceberg-above .iceberg-section-label{color:var(--gold)}.iceberg-below .iceberg-section-label{color:var(--text-tertiary)}
+.iceberg-section-title{font-family:var(--font-display);font-size:24px;margin-bottom:16px;color:var(--text-primary)}
+.iceberg-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.iceberg-list li{font-family:var(--font-body);font-size:14px;color:var(--text-secondary);padding-left:18px;position:relative;line-height:1.5}
+.iceberg-above .iceberg-list li::before{content:'\2726';position:absolute;left:0;color:var(--gold);font-size:9px;top:4px}
+.iceberg-below .iceberg-list li::before{content:'\2014';position:absolute;left:0;color:var(--text-tertiary);font-size:13px;top:0}
+
+/* PROOF */
+.proof-layout{display:grid;grid-template-columns:1fr;gap:0;margin-top:32px;max-width:1000px}
+.proof-hero{background:#fff;border:1px solid rgba(184,134,11,.25);border-radius:14px;padding:40px 36px;box-shadow:0 4px 24px rgba(184,134,11,.06)}
+.proof-card-badge{display:inline-block;font-family:var(--font-body);font-size:10px;font-weight:600;color:var(--gold);background:rgba(184,134,11,.08);padding:3px 8px;border-radius:3px;margin-bottom:14px;text-transform:uppercase;letter-spacing:1px}
+.proof-card-name{font-family:var(--font-display);font-size:32px;color:var(--text-primary);margin-bottom:6px}
+.proof-card-desc{font-family:var(--font-body);font-size:15px;color:var(--text-tertiary);margin-bottom:20px}
+.proof-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.proof-metric{background:var(--warm-gray);border-radius:8px;padding:16px 18px}
+.proof-metric-value{font-family:var(--font-display);font-size:32px;color:var(--text-primary)}
+.proof-metric-label{font-family:var(--font-body);font-size:12px;color:var(--text-tertiary);line-height:1.3;margin-top:2px}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:44px;max-width:1100px}
+.stat-card{text-align:center;padding:28px 14px}
+.stat-number{font-family:var(--font-display);font-size:68px;font-weight:500;line-height:1;margin-bottom:10px}
+.stat-number--gold{color:var(--gold)}.stat-number--green{color:var(--green)}.stat-number--blue{color:var(--blue)}.stat-number--dark{color:var(--text-primary)}
+.stat-label{font-family:var(--font-body);font-size:14px;color:var(--text-secondary);line-height:1.4}
+.compliance-strip{margin-top:44px;display:flex;align-items:center;gap:16px;padding:18px 24px;background:var(--warm-gray);border-radius:10px;max-width:1100px;flex-wrap:wrap}
+.compliance-item{font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--text-secondary);display:flex;align-items:center;gap:5px;white-space:nowrap}
+.compliance-check{color:var(--gold);font-weight:700}
+
+/* GETTING STARTED */
+.onboard-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:36px;max-width:1200px}
+.onboard-step{padding:24px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px}
+.onboard-step-num{font-family:var(--font-display);font-size:40px;color:rgba(255,255,255,.08);margin-bottom:4px;line-height:1}
+.onboard-step-time{font-family:var(--font-body);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--gold-light);margin-bottom:8px}
+.onboard-step-title{font-family:var(--font-display);font-size:20px;color:var(--text-light);margin-bottom:6px}
+.onboard-step-desc{font-family:var(--font-body);font-size:12px;color:var(--text-muted-light);line-height:1.6}
+.onboard-cta{margin-top:24px;padding:22px 32px;background:rgba(184,134,11,.06);border:1px solid rgba(184,134,11,.15);border-radius:12px;max-width:1200px}
+.onboard-cta p{font-family:var(--font-display);font-size:22px;color:var(--gold-light);line-height:1.3}
+.onboard-cta .small{font-family:var(--font-body);font-size:13px;color:var(--text-muted-light);margin-top:6px;font-weight:300}
+
+/* CLOSE */
+.close-slide{justify-content:center;align-items:center;text-align:center}
+.close-slide::before{content:'';position:absolute;top:-30%;left:-10%;width:120%;height:120%;background:radial-gradient(ellipse at 50% 50%,rgba(184,134,11,.05) 0%,transparent 60%);pointer-events:none}
+.close-tagline{font-family:var(--font-display);font-size:50px;color:var(--text-light);max-width:750px;margin-bottom:20px;line-height:1.2}.close-tagline em{color:var(--gold-light)}
+.close-sub{font-family:var(--font-body);font-size:17px;color:var(--text-muted-light);margin-bottom:40px;font-weight:300}
+.close-url{font-family:var(--font-body);font-size:18px;font-weight:500;color:var(--gold-light);letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progress"></div>
+<div class="deck" id="deck">
+
+<!-- 1: COVER -->
+<div class="slide slide--dark cover active" data-slide="1">
+<div class="cover-logo reveal">ZIGMENT</div>
+<h1 class="reveal d1">Your next showroom<br>is a <em>conversation.</em></h1>
+<div style="display:inline-flex;align-items:center;gap:20px;font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--text-muted-light);padding:10px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;margin-top:24px;" class="reveal d2">
+<span style="display:flex;align-items:center;gap:6px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--gold-light);"></span>Visual Catalog AI</span>
+<span style="display:flex;align-items:center;gap:6px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--gold-light);"></span>8,000+ SKU Matching</span>
+<span style="display:flex;align-items:center;gap:6px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--gold-light);"></span>CTWA Optimised</span>
+</div>
+<div class="cover-footer reveal d3">zigment.ai · for jewellery</div>
+</div>
+
+<!-- 2: MEERA'S JOURNEY -->
+<div class="slide slide--dark" data-slide="2">
+<span class="tag tag--gold reveal">The Buyer's Journey</span>
+<h2 class="reveal d1">Meera wants a necklace for her anniversary.<br><em>Budget: ₹2–3 lakhs.</em></h2>
+<div class="timeline">
+<div class="ti reveal d2"><div class="ti-time"><span class="ti-ch">Instagram</span>Sat</div><div class="ti-body"><div class="ti-action">Screenshots a polki set from your post. DMs a photo of a similar design from a wedding: "Do you have something like this?"</div><div class="ti-result">Auto-reply. No follow-up.</div></div></div>
+<div class="ti reveal d3"><div class="ti-time"><span class="ti-ch">CTWA</span>Mon</div><div class="ti-body"><div class="ti-action">Clicks WhatsApp ad. Sends the same photo again: "22K gold, around 2.5L."</div><div class="ti-result">Reply 4 hours later: "Please visit our store." No designs shared.</div></div></div>
+<div class="ti reveal d4"><div class="ti-time"><span class="ti-ch">WhatsApp</span>Wed</div><div class="ti-body"><div class="ti-action">Asks again: "Can you share options in that range?" Gets 3 random catalog images.</div><div class="ti-result">Different exec. No memory of her earlier messages.</div></div></div>
+<div class="ti reveal d5"><div class="ti-time"><span class="ti-ch">Store</span>Sat</div><div class="ti-body"><div class="ti-action">Visits the store. Salesperson starts from zero — no idea what she's been looking at.</div></div></div>
+<div class="ti ti--end reveal d6"><div class="ti-time" style="color:var(--red);">Next week</div><div class="ti-body"><div class="ti-action" style="color:var(--red);font-weight:500;">Buys from the brand that matched her photo in 2 minutes and had options ready at the store.</div><div class="ti-result ti-result--red">She didn't buy the best necklace. She bought the best experience.</div></div></div>
+</div>
+</div>
+
+<!-- 3: THREE FAILURE MODES -->
+<div class="slide slide--dark-2" data-slide="3">
+<span class="tag tag--gold reveal">Why This Keeps Happening</span>
+<h2 class="reveal d1">Three ways brands try to fix this.<br><em>None of them work.</em></h2>
+<div class="failures">
+<div class="f reveal d2"><div class="f-icon">👥</div><div class="f-body"><div class="f-title">More people on WhatsApp</div><div class="f-desc">Can't search 8,000 SKUs visually. Can't remember Monday's conversation on Friday. Every shift change resets context.</div><div class="f-tag">Doesn't scale. Context lost between people.</div></div></div>
+<div class="f reveal d3"><div class="f-icon">🤖</div><div class="f-body"><div class="f-title">A chatbot</div><div class="f-desc">Customer sends a photo of a design she loves. Chatbot responds: "Select category: Necklaces / Rings / Bangles." For a ₹3L purchase, this feels insulting.</div><div class="f-tag">Can't match visuals. Can't hold context. Damages brand.</div></div></div>
+<div class="f reveal d4"><div class="f-icon">📋</div><div class="f-body"><div class="f-title">Log it in CRM, follow up later</div><div class="f-desc">Lead becomes a row: "Meera — Necklace — 2.5L." Screenshot gone. Conversation gone. Sales calls: "You enquired about jewellery?"</div><div class="f-tag">Context vanishes. Follow-up feels cold and generic.</div></div></div>
+</div>
+<div class="gap-box reveal d5"><div class="gap-text">High-value buyers don't want speed. They want to feel <em>known</em>.</div></div>
+</div>
+
+<!-- 4: ENTER ZIGMENT -->
+<div class="slide slide--dark" data-slide="4" style="justify-content:center;align-items:center;text-align:center;">
+<div style="font-family:var(--font-body);font-size:16px;font-weight:600;letter-spacing:6px;text-transform:uppercase;color:var(--gold-light);margin-bottom:28px;" class="reveal">ZIGMENT FOR JEWELLERY</div>
+<h2 style="font-size:48px;max-width:850px;margin:0 auto 24px;color:var(--text-light);" class="reveal d1">An AI salesperson that sees designs,<br>remembers preferences, and <em style="color:var(--gold-light);">never forgets a customer.</em></h2>
+<p style="font-family:var(--font-body);font-size:19px;font-weight:300;line-height:1.7;color:var(--text-muted-light);max-width:680px;margin:0 auto 36px;" class="reveal d2">Visual catalog matching across 8,000+ SKUs. Full conversation memory across every channel. From CTWA click to store visit to purchase.</p>
+<div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;" class="reveal d3">
+<span style="font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--text-muted-light);padding:10px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;display:inline-flex;align-items:center;gap:8px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--gold-light);"></span>Visual Matching</span>
+<span style="font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--text-muted-light);padding:10px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;display:inline-flex;align-items:center;gap:8px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--blue);"></span>8,000+ SKU Catalog</span>
+<span style="font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--text-muted-light);padding:10px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;display:inline-flex;align-items:center;gap:8px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-light);"></span>10+ Channels</span>
+<span style="font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--text-muted-light);padding:10px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;display:inline-flex;align-items:center;gap:8px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--text-muted-light);"></span>Live in 3–5 Days</span>
+</div>
+</div>
+
+<!-- 5: VISUAL CATALOG MATCHING -->
+<div class="slide slide--dark-2" data-slide="5">
+<span class="tag tag--gold reveal">The Wow Moment</span>
+<h2 class="reveal d1">Customer sends a photo.<br><em>AI finds the match in seconds.</em></h2>
+<div style="display:grid;grid-template-columns:1fr 60px 1fr 60px 1fr;align-items:center;margin-top:40px;max-width:1100px;">
+<div class="reveal d2" style="padding:32px 28px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;text-align:center;">
+<div style="font-size:48px;margin-bottom:12px;">📸</div>
+<div style="font-family:var(--font-display);font-size:22px;color:var(--text-light);margin-bottom:6px;">Customer sends a photo</div>
+<div style="font-family:var(--font-body);font-size:13px;color:var(--text-muted-light);line-height:1.5;">Screenshot from a wedding, Instagram save, a design from another brand — any image.</div>
+</div>
+<div class="reveal d3" style="text-align:center;font-family:var(--font-body);font-size:28px;color:rgba(255,255,255,.15);">→</div>
+<div class="reveal d3" style="padding:32px 28px;background:rgba(184,134,11,.06);border:1px solid rgba(184,134,11,.2);border-radius:14px;text-align:center;">
+<div style="font-size:48px;margin-bottom:12px;">🔍</div>
+<div style="font-family:var(--font-display);font-size:22px;color:var(--gold-light);margin-bottom:6px;">AI matches against your catalog</div>
+<div style="font-family:var(--font-body);font-size:13px;color:var(--text-muted-light);line-height:1.5;">Searches 8,000+ SKUs visually. Filters by budget, metal, occasion. Ranks by similarity.</div>
+</div>
+<div class="reveal d4" style="text-align:center;font-family:var(--font-body);font-size:28px;color:rgba(255,255,255,.15);">→</div>
+<div class="reveal d4" style="padding:32px 28px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;text-align:center;">
+<div style="font-size:48px;margin-bottom:12px;">💬</div>
+<div style="font-family:var(--font-display);font-size:22px;color:var(--text-light);margin-bottom:6px;">Options presented in-conversation</div>
+<div style="font-family:var(--font-body);font-size:13px;color:var(--text-muted-light);line-height:1.5;">Product images with price, details, and buy/shortlist options — right inside WhatsApp.</div>
+</div>
+</div>
+<p style="font-family:var(--font-body);font-size:15px;color:var(--text-muted-light);margin-top:28px;max-width:800px;" class="reveal d5">Your product feed (8,000+ SKUs) is ingested and kept in sync. Every new addition, price change, and stock update reflected in real-time.</p>
+</div>
+
+<!-- 6: CONVERSATION GRAPH — MEERA WITH ZIGMENT -->
+<div class="slide slide--dark" data-slide="6">
+<span class="tag tag--gold reveal">With Zigment</span>
+<h2 class="reveal d1">Same Meera. <em>Different experience.</em></h2>
+<p class="subtitle reveal d1">One customer, one timeline, every channel. Context held from first click to store visit.</p>
+<div style="margin-top:32px;max-width:1100px;" class="reveal d2">
+<div style="display:flex;gap:8px;margin-bottom:16px;">
+<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;background:rgba(225,48,108,.1);color:#E1306C;font-family:var(--font-body);">Instagram</span>
+<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;background:rgba(37,211,102,.1);color:#25D366;font-family:var(--font-body);">WhatsApp</span>
+<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;background:rgba(184,134,11,.1);color:var(--gold-light);font-family:var(--font-body);">Store</span>
+</div>
+<div style="display:flex;gap:0;position:relative;">
+<div style="position:absolute;top:18px;left:0;right:0;height:2px;background:rgba(255,255,255,.06);"></div>
+<div style="flex:1;text-align:center;position:relative;padding-top:32px;"><div style="width:12px;height:12px;border-radius:50%;position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(225,48,108,.2);border:2px solid #E1306C;"></div><div style="font-family:var(--font-body);font-size:10px;color:var(--text-muted-light);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Sat</div><div style="font-family:var(--font-body);font-size:12px;color:var(--text-light);line-height:1.4;">DMs screenshot<br>on Instagram</div><div style="display:inline-block;font-size:10px;padding:2px 6px;border-radius:3px;margin-top:4px;font-weight:500;background:var(--gold-dim);color:var(--gold-light);">AI matches 5 options</div></div>
+<div style="flex:1;text-align:center;position:relative;padding-top:32px;"><div style="width:12px;height:12px;border-radius:50%;position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(37,211,102,.2);border:2px solid #25D366;"></div><div style="font-family:var(--font-body);font-size:10px;color:var(--text-muted-light);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Mon</div><div style="font-family:var(--font-body);font-size:12px;color:var(--text-light);line-height:1.4;">CTWA click → AI continues<br>with full context</div><div style="display:inline-block;font-size:10px;padding:2px 6px;border-radius:3px;margin-top:4px;font-weight:500;background:rgba(255,255,255,.06);color:var(--text-muted-light);">shortlists 2 pieces</div></div>
+<div style="flex:1;text-align:center;position:relative;padding-top:32px;"><div style="width:12px;height:12px;border-radius:50%;position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(37,211,102,.2);border:2px solid #25D366;"></div><div style="font-family:var(--font-body);font-size:10px;color:var(--text-muted-light);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Wed</div><div style="font-family:var(--font-body);font-size:12px;color:var(--text-light);line-height:1.4;">Asks about EMI options<br>AI responds instantly</div><div style="display:inline-block;font-size:10px;padding:2px 6px;border-radius:3px;margin-top:4px;font-weight:500;background:var(--gold-dim);color:var(--gold-light);">shares with family</div></div>
+<div style="flex:1;text-align:center;position:relative;padding-top:32px;"><div style="width:12px;height:12px;border-radius:50%;position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(26,122,76,.3);border:2px solid var(--green-light);"></div><div style="font-family:var(--font-body);font-size:10px;color:var(--text-muted-light);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Thu</div><div style="font-family:var(--font-body);font-size:12px;color:var(--text-light);line-height:1.4;">AI books store visit<br>Shares brief with salesperson</div><div style="display:inline-block;font-size:10px;padding:2px 6px;border-radius:3px;margin-top:4px;font-weight:500;background:rgba(26,122,76,.15);color:var(--green-light);">designs kept aside</div></div>
+<div style="flex:1;text-align:center;position:relative;padding-top:32px;"><div style="width:12px;height:12px;border-radius:50%;position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(184,134,11,.3);border:2px solid var(--gold-light);"></div><div style="font-family:var(--font-body);font-size:10px;color:var(--text-muted-light);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Sat</div><div style="font-family:var(--font-body);font-size:12px;color:var(--text-light);line-height:1.4;">Walks into store.<br>Salesperson knows everything.</div><div style="display:inline-block;font-size:10px;padding:2px 6px;border-radius:3px;margin-top:4px;font-weight:500;background:rgba(26,122,76,.15);color:var(--green-light);">purchased ✓</div></div>
+</div>
+</div>
+<p style="font-family:var(--font-body);font-size:14px;color:var(--text-muted-light);margin-top:20px;" class="reveal d3">One timeline. Every channel. From DM to store — context never breaks.</p>
+</div>
+
+<!-- 7: HOW IT WORKS -->
+<div class="slide slide--light" data-slide="7">
+<span class="tag tag--gold reveal">How It Works</span>
+<h2 class="reveal d1" style="color:var(--text-primary);">From CTWA click to store visit.<br><em>Automated. Visual. Personal.</em></h2>
+<div class="flow reveal d2">
+<div class="flow-step"><div class="flow-icon flow-icon--gold">📱</div><div class="flow-title">CTWA Click</div><div class="flow-desc">Customer clicks ad, lands in WhatsApp conversation</div></div>
+<div class="flow-step"><div class="flow-icon flow-icon--gold">📸</div><div class="flow-title">Visual Match</div><div class="flow-desc">Sends photo or describes preference. AI matches against catalog.</div></div>
+<div class="flow-step"><div class="flow-icon flow-icon--green">🎯</div><div class="flow-title">Qualify & Nurture</div><div class="flow-desc">Budget, occasion, timeline. AI shortlists and nurtures over days.</div></div>
+<div class="flow-step"><div class="flow-icon flow-icon--gold">🏪</div><div class="flow-title">Book Store Visit</div><div class="flow-desc">Appointment booked. Salesperson gets full brief + shortlist.</div></div>
+<div class="flow-step"><div class="flow-icon flow-icon--blue">🔄</div><div class="flow-title">Post-Visit</div><div class="flow-desc">Follow-up, thank you, occasion reminders, repeat purchase.</div></div>
+</div>
+</div>
+
+<!-- 8: LIVE SCENARIOS -->
+<div class="slide slide--warm" data-slide="8">
+<span class="tag tag--light reveal">Live Scenarios</span>
+<h2 class="reveal d1" style="color:var(--text-primary);">Not a chatbot.<br><em>See the difference.</em></h2>
+<div class="scenarios">
+<div class="sc reveal d2"><div class="sc-header"><span class="sc-ch sc-ch--wa">WhatsApp</span><span class="sc-time">11:30 PM via CTWA</span></div><div class="sc-body"><div class="sc-label">Late-night design discovery</div><div class="sc-msg">Customer sends a wedding photo: "Something like this in 22K, under 2L." AI matches 4 designs from catalog, shares images with pricing, asks about occasion.</div><div class="sc-result">Visual match + shortlist created while store was closed</div></div></div>
+<div class="sc reveal d3"><div class="sc-header"><span class="sc-ch sc-ch--ig">Instagram</span><span class="sc-time">After a reel</span></div><div class="sc-body"><div class="sc-label">Social → WhatsApp handoff</div><div class="sc-msg">DMs asking about a set from your reel. AI moves conversation to WhatsApp, shares similar options, remembers her earlier CTWA interaction.</div><div class="sc-result">Cross-channel context maintained. Store visit booked.</div></div></div>
+<div class="sc reveal d4"><div class="sc-header"><span class="sc-ch sc-ch--sms">Store Prep</span><span class="sc-time">Day before visit</span></div><div class="sc-body"><div class="sc-label">Salesperson brief</div><div class="sc-msg">AI sends the store team a brief: customer's shortlist, budget, occasion, preferences from 2 weeks of conversation. Designs kept aside before she arrives.</div><div class="sc-result">Walk-in feels like a personal shopping appointment</div></div></div>
+</div>
+</div>
+
+<!-- 9: CONTEXT = BRAND EXPERIENCE -->
+<div class="slide slide--dark" data-slide="9">
+<span class="tag tag--gold reveal">Context Is The Experience</span>
+<h2 class="reveal d1">For a ₹3L purchase, <em>this is the difference<br>between your brand and any other shop.</em></h2>
+<div class="ctx-compare">
+<div class="ctx-col ctx-col--without reveal d2">
+<div class="ctx-label">Without context</div>
+<div class="ctx-msg">"Hi ma'am, you enquired about jewellery. Would you like to visit our store?"</div>
+<div class="ctx-msg">"What kind of designs are you looking for?"</div>
+<div class="ctx-msg">"What's your budget range?"</div>
+<div class="ctx-outcome ctx-outcome--bad">Feels like starting over. Every. Single. Time.</div>
+</div>
+<div class="ctx-col ctx-col--with reveal d3">
+<div class="ctx-label">With Zigment</div>
+<div class="ctx-msg">"Hi Meera, the <em>polki necklace set you shortlisted</em> is available at our Bandra store. We've also found a new arrival that matches the <em>design you shared from the wedding</em>."</div>
+<div class="ctx-msg">"Both are in your range of <em>₹2–2.5L</em>. Would Saturday work for a viewing? We'll keep them aside."</div>
+<div class="ctx-outcome ctx-outcome--good">Feels like a personal shopper. That's what ₹3L buyers expect.</div>
+</div>
+</div>
+</div>
+
+<!-- 10: YOUR AI, OUR INFRASTRUCTURE -->
+<div class="slide slide--light" data-slide="10">
+<span class="tag tag--gold reveal">The Platform</span>
+<h2 class="reveal d1" style="color:var(--text-primary);"><em>Your</em> designs. <em>Your</em> brand voice.<br>Our infrastructure.</h2>
+<div class="iceberg-layout">
+<div class="iceberg-above reveal d2"><div class="iceberg-section-label">☝️ What your team controls</div><div class="iceberg-section-title">Your catalog. Your tone. Your rules.</div>
+<ul class="iceberg-list"><li>Product feed ingestion — 8,000+ SKUs, synced in real-time</li><li>Visual matching preferences and ranking logic</li><li>Brand voice, tone, and conversation style</li><li>Pricing rules, discount policies, EMI options</li><li>Store visit booking flows and salesperson assignment</li><li>Nurture sequences — occasion reminders, follow-ups</li></ul></div>
+<div class="iceberg-below reveal d3"><div class="iceberg-section-label">👇 What Zigment handles</div><div class="iceberg-section-title">The infrastructure you'd spend 12+ months building.</div>
+<ul class="iceberg-list"><li>Visual AI — image matching against product catalog</li><li>Multi-channel orchestration — WhatsApp, Instagram, Web, Phone</li><li>Conversation Graph™ — full customer timeline, queryable</li><li>CDP / CRM sync — bi-directional, real-time</li><li>Multi-LLM engine — best model per task</li><li>Store visit coordination — brief, shortlist, reminders</li><li>Analytics, attribution & reporting</li><li>SOC 2 · ISO 27001 · GDPR · Data isolation</li></ul></div>
+</div>
+</div>
+
+<!-- 11: PROOF — BLUESTONE -->
+<div class="slide slide--light" data-slide="11">
+<span class="tag tag--light reveal">Proof</span>
+<h2 class="reveal d1" style="color:var(--text-primary);">Already powering India's<br><em>leading jewellery brand.</em></h2>
+<div class="proof-layout">
+<div class="proof-hero reveal d2">
+<div class="proof-card-badge">Live · CTWA + Visual Catalog AI</div>
+<div class="proof-card-name">BlueStone</div>
+<div class="proof-card-desc">India's leading online jewellery brand. 8,000+ SKU catalog ingested. CTWA-first conversational commerce.</div>
+<div class="proof-metrics">
+<div class="proof-metric"><div class="proof-metric-value" style="color:var(--gold);">12x</div><div class="proof-metric-label">ROAS on store visits<br>with CTWA + Zigment</div></div>
+<div class="proof-metric"><div class="proof-metric-value">8,000+</div><div class="proof-metric-label">SKUs in product catalog<br>ingested as product feed</div></div>
+<div class="proof-metric"><div class="proof-metric-value">Visual</div><div class="proof-metric-label">AI matching — photos to<br>catalog in real-time</div></div>
+<div class="proof-metric"><div class="proof-metric-value">24/7</div><div class="proof-metric-label">Conversational commerce<br>across channels</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 12: BY THE NUMBERS -->
+<div class="slide slide--warm" data-slide="12">
+<span class="tag tag--light reveal">By The Numbers</span>
+<h2 class="reveal d1" style="color:var(--text-primary);">Measured results.<br><em>From live jewellery deployments.</em></h2>
+<div class="stats-grid">
+<div class="stat-card reveal d2"><div class="stat-number stat-number--gold">12x</div><div class="stat-label">ROAS on store visits<br>via CTWA + Zigment</div></div>
+<div class="stat-card reveal d3"><div class="stat-number stat-number--green">&lt;60s</div><div class="stat-label">First response with<br>visual product matches</div></div>
+<div class="stat-card reveal d4"><div class="stat-number stat-number--blue">8,000+</div><div class="stat-label">SKUs searchable<br>visually in real-time</div></div>
+<div class="stat-card reveal d5"><div class="stat-number stat-number--dark">3–5 days</div><div class="stat-label">To go live with<br>full catalog integration</div></div>
+</div>
+<div class="compliance-strip reveal d6">
+<span class="compliance-item"><span class="compliance-check">✓</span> SOC 2</span>
+<span class="compliance-item"><span class="compliance-check">✓</span> ISO 27001</span>
+<span class="compliance-item"><span class="compliance-check">✓</span> GDPR</span>
+<span class="compliance-item"><span class="compliance-check">✓</span> Product Feed Sync</span>
+<span class="compliance-item"><span class="compliance-check">✓</span> CDP / CRM Integration</span>
+<span class="compliance-item"><span class="compliance-check">✓</span> 40+ Integrations</span>
+</div>
+</div>
+
+<!-- 13: GETTING STARTED -->
+<div class="slide slide--dark" data-slide="13">
+<span class="tag tag--gold reveal">Getting Started</span>
+<h2 class="reveal d1">Live in 5 days.<br><em>Your full catalog, AI-ready.</em></h2>
+<div class="onboard-steps">
+<div class="onboard-step reveal d2"><div class="onboard-step-num">01</div><div class="onboard-step-time">Day 1–2</div><div class="onboard-step-title">Ingest Catalog</div><div class="onboard-step-desc">We ingest your product feed — images, pricing, metadata. Connect WhatsApp, Instagram, CRM.</div></div>
+<div class="onboard-step reveal d3"><div class="onboard-step-num">02</div><div class="onboard-step-time">Day 3–4</div><div class="onboard-step-title">Configure AI</div><div class="onboard-step-desc">Set brand voice, visual matching preferences, qualification logic, store visit booking flows.</div></div>
+<div class="onboard-step reveal d4"><div class="onboard-step-num">03</div><div class="onboard-step-time">Day 5</div><div class="onboard-step-title">Go Live</div><div class="onboard-step-desc">AI starts handling CTWA conversations. Visual matching active. Store team gets customer briefs.</div></div>
+<div class="onboard-step reveal d5"><div class="onboard-step-num">04</div><div class="onboard-step-time">Week 2–4</div><div class="onboard-step-title">Optimise</div><div class="onboard-step-desc">Analyse store visit conversion. Tune visual matching. Add nurture flows. Scale across channels.</div></div>
+</div>
+<div class="onboard-cta reveal d6"><p>Start with CTWA on WhatsApp. See store visit uplift in 2 weeks.</p><div class="small">No long-term lock-in. Your catalog stays yours. Just proof.</div></div>
+</div>
+
+<!-- 14: CLOSE -->
+<div class="slide slide--dark close-slide" data-slide="14">
+<div class="cover-logo reveal">ZIGMENT</div>
+<div class="close-tagline reveal d1">Your next showroom<br>is a <em>conversation.</em></div>
+<div class="close-sub reveal d2">8,000 designs. One conversation. Every channel.</div>
+<div class="reveal d3"><div class="close-url">zigment.ai</div></div>
+</div>
+
+</div>
+<div class="nav"><button class="nav-btn" id="prevBtn">&#8249;</button><div class="nav-counter" id="counter">1 / 14</div><button class="nav-btn" id="nextBtn">&#8250;</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),counter=document.getElementById('counter'),progress=document.getElementById('progress');let current=0;const total=slides.length;
+function goTo(n){if(n<0||n>=total)return;slides[current].classList.remove('active');current=n;slides[current].classList.add('active');counter.textContent=`${current+1} / ${total}`;progress.style.width=`${((current+1)/total)*100}%`}
+function next(){goTo(current+1)}function prev(){goTo(current-1)}
+document.getElementById('nextBtn').addEventListener('click',next);document.getElementById('prevBtn').addEventListener('click',prev);
+document.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();next()}if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev()}if(e.key==='Home'){e.preventDefault();goTo(0)}if(e.key==='End'){e.preventDefault();goTo(total-1)}});
+let touchStartX=0;document.addEventListener('touchstart',(e)=>{touchStartX=e.touches[0].clientX});document.addEventListener('touchend',(e)=>{const diff=touchStartX-e.changedTouches[0].clientX;if(Math.abs(diff)>60){diff>0?next():prev()}});
+progress.style.width=`${(1/total)*100}%`;
+</script>
+</body>
+</html>
