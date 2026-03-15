@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zigment AI — Pitch Deck v8</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF8F5;
+    --black: #1A1A1A;
+    --white: #fff;
+    --warm-100: #F0EDE8;
+    --warm-200: #E2DED6;
+    --warm-300: #C5C0B6;
+    --gray-500: #7A756C;
+    --gray-600: #5C584F;
+    --gray-700: #3D3A34;
+    --rust: #B8432F;
+    --rust-light: #D4654F;
+    --green: #2D7A50;
+    --blue: #3B6EC9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--black);
+    font-family: 'Sora', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .deck { width: 100vw; height: 100vh; position: relative; }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 64px 96px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+    overflow-y: auto;
+  }
+
+  .slide.active { opacity: 1; pointer-events: all; }
+
+
+  /* TYPOGRAPHY */
+  .kicker {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 28px;
+  }
+
+  .display {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    font-size: clamp(36px, 4vw, 62px);
+    line-height: 1.22;
+    letter-spacing: -0.015em;
+    color: var(--black);
+    max-width: 880px;
+  }
+
+  .display em { font-style: italic; }
+  .display strong { font-weight: 700; }
+
+  .display-hero {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: clamp(60px, 8.5vw, 130px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--black);
+  }
+
+  .display-sm {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    font-size: clamp(26px, 2.8vw, 42px);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--black);
+    max-width: 860px;
+  }
+
+  .definition {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    font-size: clamp(24px, 2.6vw, 38px);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--black);
+    max-width: 840px;
+  }
+
+  .definition em { font-style: italic; }
+
+  .body {
+    font-family: 'Sora', sans-serif;
+    font-weight: 400;
+    font-size: clamp(16px, 1.4vw, 20px);
+    line-height: 1.65;
+    color: var(--gray-600);
+    max-width: 680px;
+  }
+
+  .note {
+    font-family: 'Sora', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--gray-500);
+  }
+
+  .note-lg {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: clamp(18px, 1.6vw, 22px);
+    color: var(--gray-700);
+    max-width: 640px;
+    line-height: 1.5;
+  }
+
+  /* SPACERS */
+  .sp-xs { height: 10px; }
+  .sp-sm { height: 20px; }
+  .sp-md { height: 32px; }
+  .sp-lg { height: 48px; }
+  .sp-xl { height: 68px; }
+
+  /* PROBLEM STATS */
+  .problem-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 40px;
+  }
+
+  .problem-stat {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .problem-stat::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 4px;
+    width: 4px; height: 100%;
+    background: var(--rust);
+    border-radius: 2px;
+  }
+
+  .problem-stat .num {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: clamp(36px, 3.5vw, 52px);
+    line-height: 1;
+    color: var(--black);
+  }
+
+  .problem-stat .desc {
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    color: var(--gray-600);
+    margin-top: 6px;
+    max-width: 220px;
+    line-height: 1.4;
+  }
+
+  /* AUDIENCE BLOCKS */
+  .audience-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 760px;
+    margin-top: 48px;
+  }
+
+  .audience-block {
+    border-top: 3px solid var(--black);
+    padding-top: 16px;
+  }
+
+  .audience-block h4 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: 6px;
+    color: var(--black);
+  }
+
+  .audience-block p {
+    font-family: 'Sora', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--gray-600);
+    line-height: 1.45;
+  }
+
+  /* CUSTOMER TAGS */
+  .cust-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-width: 860px;
+  }
+
+  .cust {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    padding: 12px 22px;
+    background: var(--white);
+    border: 1.5px solid var(--warm-200);
+    color: var(--black);
+  }
+
+  .cust.primary {
+    border-color: var(--black);
+    background: var(--black);
+    color: var(--bg);
+  }
+
+  /* RESULTS */
+  .res-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+  }
+
+  .res-card {
+    padding-top: 20px;
+    position: relative;
+  }
+
+  .res-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--black);
+  }
+
+  .res-card h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .res-card .tag {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--gray-500);
+    margin-bottom: 18px;
+  }
+
+  .m-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .m-num {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .m-text {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    color: var(--gray-600);
+  }
+
+  /* EXPANSION BARS */
+  .exp-group { margin-bottom: 24px; }
+
+  .exp-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .exp-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 5px;
+  }
+
+  .exp-lbl {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    color: var(--gray-600);
+    width: 150px;
+    flex-shrink: 0;
+  }
+
+  .exp-track {
+    flex: 1;
+    height: 16px;
+    background: var(--warm-100);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .exp-fill { height: 100%; border-radius: 2px; }
+  .exp-fill.bl { background: var(--blue); }
+  .exp-fill.ru { background: var(--rust); }
+  .exp-fill.gr { background: var(--green); }
+
+  .exp-v {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px;
+    width: 72px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .exp-v.hi { color: var(--rust); font-weight: 700; }
+
+  /* STORY GRID */
+  .story-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px 40px;
+    max-width: 820px;
+  }
+
+  .story-card {
+    background: var(--white);
+    padding: 24px;
+    border: 1px solid var(--warm-200);
+  }
+
+  .story-card .val {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .story-card .desc {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    color: var(--gray-600);
+    line-height: 1.4;
+  }
+
+  /* INSIGHT COMPARE */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 760px;
+    margin-top: 32px;
+  }
+
+  .compare-box {
+    padding: 28px;
+    background: var(--white);
+    border: 1px solid var(--warm-200);
+  }
+
+  .compare-box h4 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+
+  .compare-box p {
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    color: var(--gray-600);
+    line-height: 1.55;
+  }
+
+  .compare-box.zig {
+    background: var(--black);
+    border-color: var(--black);
+  }
+
+  .compare-box.zig h4 { color: var(--rust-light); }
+  .compare-box.zig p { color: rgba(255,255,255,0.75); }
+
+  /* DEFENSIBILITY */
+  .def-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 760px;
+  }
+
+  .def-card {
+    background: var(--white);
+    border: 1px solid var(--warm-200);
+    padding: 24px 28px;
+  }
+
+  .def-card .who {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--rust);
+    margin-bottom: 6px;
+  }
+
+  .def-card p {
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    color: var(--gray-600);
+    line-height: 1.6;
+  }
+
+  .def-footer {
+    margin-top: 32px;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--gray-700);
+  }
+
+  /* PLATFORM */
+  .plat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 820px;
+  }
+
+  .plat-card {
+    background: var(--white);
+    border: 1px solid var(--warm-200);
+    padding: 20px 22px;
+  }
+
+  .plat-card h4 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .plat-card p {
+    font-size: 15px;
+    color: var(--gray-600);
+    line-height: 1.5;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .badge {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 7px 16px;
+    border: 1.5px solid var(--black);
+    background: var(--white);
+  }
+
+  /* SPLIT LAYOUT */
+  .split-row {
+    display: flex;
+    gap: 64px;
+    align-items: flex-start;
+  }
+
+  .split-left {
+    flex: 1;
+    max-width: 480px;
+  }
+
+  .split-right {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .arg-block {
+    border-left: 3px solid var(--black);
+    padding-left: 20px;
+    margin-bottom: 28px;
+  }
+
+  .arg-block:last-child { margin-bottom: 0; }
+
+  .arg-block h4 {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+
+  .arg-block p {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    color: var(--gray-600);
+    line-height: 1.55;
+  }
+
+  .chart-tall {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    height: 280px;
+    border-bottom: 2px solid var(--warm-300);
+  }
+
+  /* STACKED BAR */
+  .stacked-section {
+    max-width: 780px;
+    margin-bottom: 48px;
+  }
+
+  .stacked-bar {
+    display: flex;
+    height: 44px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  .seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--white);
+  }
+
+  .seg-1 { background: var(--black); flex: 4; }
+  .seg-2 { background: #3D3A34; flex: 3; }
+  .seg-3 { background: #5C584F; flex: 3; }
+
+  .stacked-labels {
+    display: flex;
+    max-width: 780px;
+  }
+
+  .seg-label h4 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--black);
+  }
+
+  .seg-label p {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+
+  .seg-label-1 { flex: 4; padding-right: 12px; }
+  .seg-label-2 { flex: 3; padding-right: 12px; }
+  .seg-label-3 { flex: 3; }
+
+  .stacked-total {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 2px solid var(--black);
+    max-width: 780px;
+  }
+
+  .st-label {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--gray-600);
+  }
+
+  .st-amount {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: 32px;
+  }
+
+  .st-date {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    color: var(--gray-500);
+    margin-left: auto;
+  }
+
+  /* TRAJECTORY */
+  .traj-section {
+    max-width: 780px;
+  }
+
+  .traj-label {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 16px;
+  }
+
+  .traj-area {
+    display: flex;
+    align-items: flex-end;
+    height: 180px;
+    border-bottom: 2px solid var(--warm-300);
+    gap: 8px;
+  }
+
+  /* TRANSFORMATION DIAGRAM */
+  .transform-panels {
+    display: grid;
+    grid-template-columns: 1fr 48px 1fr;
+    gap: 0;
+    max-width: 860px;
+    align-items: start;
+  }
+
+  .tp-label {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .tp-broken { color: var(--gray-500); }
+  .tp-fixed { color: var(--rust); }
+
+  .tp-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 36px;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 28px;
+    color: var(--warm-300);
+  }
+
+  .tp-canvas-wrap { position: relative; height: 320px; }
+  .tp-canvas { position: relative; width: 100%; height: 100%; }
+  .tp-canvas svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+  .tp-dot {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tp-name {
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 5px;
+    white-space: nowrap;
+  }
+
+  .tp-name-frag { color: var(--gray-500); }
+  .tp-name-conn { color: var(--gray-700); }
+
+  .tp-circle-frag {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--warm-100);
+    border: 1.5px solid var(--warm-300);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .tp-circle-conn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--warm-200);
+    border: 1px solid var(--warm-300);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .tp-frag-line {
+    stroke: var(--warm-300);
+    stroke-width: 1.5;
+    stroke-dasharray: 5 5;
+    fill: none;
+    opacity: 0.5;
+  }
+
+  .tp-conn-line {
+    stroke: var(--gray-700);
+    stroke-width: 1.5;
+    fill: none;
+    opacity: 0.15;
+  }
+
+  .tp-x {
+    position: absolute;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--rust);
+    opacity: 0.45;
+    line-height: 1;
+  }
+
+  .tp-hub {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--rust);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 2;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .tp-hub-name {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .tp-hub-sub {
+    font-family: 'Sora', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    margin-top: 5px;
+    line-height: 1.2;
+  }
+
+  .tp-caption {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    margin-top: 16px;
+    line-height: 1.55;
+  }
+
+  .tp-caption-frag { color: var(--gray-500); }
+  .tp-caption-conn { color: var(--gray-700); font-weight: 500; }
+
+  .tp-bottom {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--gray-700);
+    margin-top: 40px;
+    max-width: 640px;
+  }
+
+  .tp-rect-hub {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px;
+    height: 220px;
+    background: var(--rust);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    text-align: center;
+    padding: 12px 8px;
+    gap: 12px;
+  }
+
+  .tp-rect-name {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .tp-rect-divider {
+    width: 32px;
+    height: 1px;
+    background: rgba(255,255,255,0.25);
+  }
+
+  .tp-rect-sub {
+    font-family: 'Sora', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* CUSTOMER TIERS */
+  .cust-tier-1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    max-width: 820px;
+  }
+
+  .ct1 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    background: var(--black);
+    color: var(--white);
+  }
+
+  .cust-tier-2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    max-width: 820px;
+  }
+
+  .ct2 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    background: var(--white);
+    border: 1.5px solid var(--black);
+    color: var(--black);
+  }
+
+  .cust-tier-3 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 820px;
+    margin-bottom: 24px;
+  }
+
+  .ct3 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    background: var(--white);
+    border: 1px solid var(--warm-200);
+    color: var(--gray-600);
+  }
+
+  .ct-more {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 14px;
+    padding: 7px 14px;
+    color: var(--gray-500);
+  }
+
+  .cust-verts {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .cv {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-500);
+    padding: 5px 0;
+    border-bottom: 2px solid var(--warm-300);
+  }
+
+  /* TEAM & INVESTORS */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 780px;
+    margin-bottom: 44px;
+  }
+
+  .team-card {
+    padding-bottom: 16px;
+    border-bottom: 3px solid var(--black);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .team-photo {
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center top;
+    background-color: var(--warm-200);
+    margin-bottom: 14px;
+  }
+
+  .team-name {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--black);
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+
+  .team-role {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    color: var(--gray-500);
+  }
+
+  .investors-section {
+    max-width: 780px;
+  }
+
+  .investors-label {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 14px;
+  }
+
+  .investor-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .investor-tag {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 8px 18px;
+    background: var(--white);
+    border: 1.5px solid var(--warm-200);
+    color: var(--gray-600);
+  }
+
+  .investor-tag.primary {
+    background: var(--black);
+    border-color: var(--black);
+    color: var(--white);
+  }
+
+  /* APPENDIX STYLES */
+  .appendix-col-header {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 10px;
+  }
+
+  .appx-ch {
+    background: var(--white);
+    border: 1px solid var(--warm-200);
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-700);
+  }
+
+  .appx-chip {
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.8);
+    flex: 1;
+    text-align: center;
+  }
+
+  .appx-llm {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.4);
+    border-radius: 2px;
+  }
+
+  .appx-out {
+    background: var(--white);
+    border: 1px solid var(--warm-200);
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--black);
+    line-height: 1.3;
+  }
+
+  .appx-out span {
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--gray-500);
+  }
+
+  .appx-sys {
+    font-family: 'Sora', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-500);
+    padding: 7px 14px;
+    border: 1px solid var(--warm-200);
+    background: var(--white);
+  }
+
+  /* PATH */
+  .path-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 720px;
+    margin-bottom: 28px;
+  }
+
+  .path-row {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+  }
+
+  .path-dot {
+    width: 7px; height: 7px;
+    background: var(--rust);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 9px;
+  }
+
+  .path-row p {
+    font-size: 17px;
+    color: var(--gray-700);
+    line-height: 1.5;
+  }
+
+  .path-row strong { color: var(--black); }
+
+  /* CHART */
+  .chart-wrap {
+    display: flex;
+    align-items: flex-end;
+    gap: clamp(8px, 2vw, 24px);
+    height: 150px;
+    border-bottom: 2px solid var(--warm-300);
+    max-width: 480px;
+  }
+
+  .ch-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ch-val {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .ch-bar {
+    width: 100%;
+    max-width: 44px;
+    background: var(--black);
+    border-radius: 2px 2px 0 0;
+  }
+
+  .ch-bar.fut {
+    background: none;
+    border: 2px dashed var(--warm-300);
+    border-radius: 2px 2px 0 0;
+  }
+
+  .ch-lbl {
+    font-size: 15px;
+    color: var(--gray-500);
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  /* ASK */
+  .ask-num {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: clamp(64px, 9vw, 130px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .ask-grid {
+    display: flex;
+    gap: 32px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  .ask-item {
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    color: var(--gray-600);
+    padding-left: 16px;
+    border-left: 3px solid var(--rust);
+    line-height: 1.5;
+  }
+
+  .ask-item strong {
+    color: var(--black);
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  @media print {
+    body { overflow: visible; height: auto; }
+    .deck { height: auto; position: static; }
+    .slide {
+      position: relative;
+      opacity: 1;
+      pointer-events: auto;
+      page-break-after: always;
+      height: 100vh;
+      break-after: page;
+    }
+    .nav, .hint, .prog-wrap { display: none !important; }
+  }
+
+  /* NAV */
+  .nav {
+    position: fixed;
+    bottom: 24px;
+    right: 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 100;
+  }
+
+  .nav-btn {
+    width: 42px; height: 42px;
+    border: 1.5px solid var(--warm-300);
+    background: var(--bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--black);
+    transition: all 0.15s;
+    border-radius: 4px;
+  }
+
+  .nav-btn:hover { border-color: var(--black); }
+
+  .sn {
+    font-size: 15px;
+    color: var(--gray-500);
+    min-width: 48px;
+    text-align: center;
+  }
+
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--rust);
+    transition: width 0.3s ease;
+    z-index: 100;
+  }
+
+  .hint {
+    position: fixed;
+    bottom: 28px;
+    left: 32px;
+    font-size: 15px;
+    color: var(--warm-300);
+    z-index: 100;
+  }
+
+  .hint kbd {
+    border: 1px solid var(--warm-300);
+    padding: 2px 7px;
+    font-size: 14px;
+    border-radius: 3px;
+    margin: 0 1px;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="prog"></div>
+
+<div class="deck">
+
+  <!-- S1: TITLE -->
+  <div class="slide active" data-slide="0" style="overflow: hidden;">
+    <img src="data:image/png;base64,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" alt="" style="position: absolute; right: 2%; top: 50%; transform: translateY(-50%); height: 65vh; width: auto; opacity: 0.04; pointer-events: none; user-select: none;">
+    <div style="position: absolute; top: 36px; left: 96px; font-family: 'Sora', sans-serif; font-weight: 500; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-300); z-index: 1;">Conversational Revenue Orchestration</div>
+    <div class="display-hero" style="position: relative; z-index: 1;">Zigment</div>
+    <p style="font-family: 'Sora', sans-serif; font-size: clamp(18px, 2.2vw, 26px); color: var(--rust); margin-top: 24px; position: relative; z-index: 1; opacity: 0.7;">Helping businesses turn conversations into revenue.</p>
+    <div style="position: absolute; bottom: 52px; left: 96px; z-index: 1;">
+      <span class="note">dikshant@zigment.ai</span>
+    </div>
+  </div>
+
+  <!-- S2: THE PROBLEM -->
+  <div class="slide" data-slide="1">
+    <div class="kicker">THE PROBLEM</div>
+    <div class="display" style="font-size: clamp(24px, 2.4vw, 36px);">
+      Businesses spend billions driving prospects in, then pass them through a stack of siloed tools that don't talk to each other. Context evaporates between CRM, chat, email, and ads. Responses are slow, follow-ups are blind, and <em>most leads die</em> in the gaps between systems.
+    </div>
+
+    <div class="problem-stats">
+      <div class="problem-stat">
+        <div class="num">$1.2T</div>
+        <div class="desc">lost annually by US businesses due to poor lead follow-up</div>
+      </div>
+      <div class="problem-stat">
+        <div class="num">79%</div>
+        <div class="desc">of marketing leads never convert to sales — lack of follow-up is the #1 reason</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3: WHAT IS ZIGMENT -->
+  <div class="slide" data-slide="2">
+    <div class="kicker">WHAT IS ZIGMENT</div>
+    <div class="definition">
+      Zigment is a conversational revenue orchestration platform, an Agentic layer across the entire Marketing stack that gives every prospect one continuous, context-aware conversation, no matter how many systems they pass through, and ensures <em>nothing falls through the cracks.</em>
+    </div>
+    <div class="note-lg" style="margin-top: 24px;">Every message, click, and call becomes an instant, sentiment-aware action that drives measurable revenue lift.</div>
+
+    <div class="audience-row">
+      <div class="audience-block">
+        <h4>Growth & Marketing</h4>
+        <p>Convert more demand</p>
+      </div>
+      <div class="audience-block">
+        <h4>RevOps Teams</h4>
+        <p>Make the stack work</p>
+      </div>
+      <div class="audience-block">
+        <h4>Exec Teams</h4>
+        <p>See the full journey</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: HOW IT WORKS -->
+  <div class="slide" data-slide="4">
+    <div class="kicker">HOW IT WORKS</div>
+    <div class="display" style="font-size: clamp(24px, 2.6vw, 36px); margin-bottom: 48px;">Same prospect. Same touchpoints. <em>Completely different outcome.</em></div>
+
+    <div class="transform-panels">
+      <!-- LEFT: WITHOUT -->
+      <div>
+        <div class="tp-label tp-broken">WITHOUT ZIGMENT</div>
+        <div class="tp-canvas-wrap" style="height: 300px;">
+          <div class="tp-canvas">
+            <svg viewBox="0 0 380 300">
+              <line class="tp-frag-line" x1="60" y1="42" x2="75" y2="160"/>
+              <line class="tp-frag-line" x1="148" y1="95" x2="280" y2="140"/>
+              <line class="tp-frag-line" x1="175" y1="232" x2="145" y2="100"/>
+            </svg>
+
+            <div class="tp-dot" style="left: 30px; top: 8px;">
+              <div class="tp-circle-frag">💬</div>
+              <div class="tp-name tp-name-frag">WhatsApp</div>
+            </div>
+            <div class="tp-dot" style="left: 252px; top: 12px;">
+              <div class="tp-circle-frag">📧</div>
+              <div class="tp-name tp-name-frag">Email</div>
+            </div>
+            <div class="tp-dot" style="left: 118px; top: 62px;">
+              <div class="tp-circle-frag">📊</div>
+              <div class="tp-name tp-name-frag">CRM</div>
+            </div>
+            <div class="tp-dot" style="left: 46px; top: 148px;">
+              <div class="tp-circle-frag">📱</div>
+              <div class="tp-name tp-name-frag">Instagram</div>
+            </div>
+            <div class="tp-dot" style="left: 252px; top: 120px;">
+              <div class="tp-circle-frag">📞</div>
+              <div class="tp-name tp-name-frag">Call center</div>
+            </div>
+            <div class="tp-dot" style="left: 148px; top: 210px;">
+              <div class="tp-circle-frag">🎯</div>
+              <div class="tp-name tp-name-frag">Ad platform</div>
+            </div>
+
+            <div class="tp-x" style="left: 58px; top: 102px;">✕</div>
+            <div class="tp-x" style="left: 152px; top: 168px;">✕</div>
+          </div>
+        </div>
+        <div class="tp-caption tp-caption-frag">Scattered. Context lost between every handoff. Prospects repeat themselves. Sales flies blind.</div>
+      </div>
+
+      <!-- DIVIDER -->
+      <div class="tp-divider">→</div>
+
+      <!-- RIGHT: WITH -->
+      <div>
+        <div class="tp-label tp-fixed">WITH ZIGMENT</div>
+        <div class="tp-canvas-wrap" style="height: 300px;">
+          <div class="tp-canvas">
+            <svg viewBox="0 0 380 300">
+              <line class="tp-conn-line" x1="68" y1="32" x2="155" y2="60"/>
+              <line class="tp-conn-line" x1="68" y1="112" x2="155" y2="112"/>
+              <line class="tp-conn-line" x1="68" y1="195" x2="155" y2="180"/>
+              <line class="tp-conn-line" x1="310" y1="32" x2="228" y2="60"/>
+              <line class="tp-conn-line" x1="310" y1="125" x2="228" y2="130"/>
+              <line class="tp-conn-line" x1="310" y1="218" x2="228" y2="200"/>
+            </svg>
+
+            <div class="tp-dot" style="left: 2px; top: 8px;">
+              <div class="tp-circle-conn">💬</div>
+              <div class="tp-name tp-name-conn">WhatsApp</div>
+            </div>
+            <div class="tp-dot" style="left: 2px; top: 88px;">
+              <div class="tp-circle-conn">📱</div>
+              <div class="tp-name tp-name-conn">Instagram</div>
+            </div>
+            <div class="tp-dot" style="left: 2px; top: 170px;">
+              <div class="tp-circle-conn">📞</div>
+              <div class="tp-name tp-name-conn">Voice</div>
+            </div>
+
+            <div class="tp-dot" style="left: 284px; top: 8px;">
+              <div class="tp-circle-conn">📊</div>
+              <div class="tp-name tp-name-conn">CRM</div>
+            </div>
+            <div class="tp-dot" style="left: 284px; top: 100px;">
+              <div class="tp-circle-conn">🎯</div>
+              <div class="tp-name tp-name-conn">Ad platform</div>
+            </div>
+            <div class="tp-dot" style="left: 284px; top: 194px;">
+              <div class="tp-circle-conn">📧</div>
+              <div class="tp-name tp-name-conn">Email</div>
+            </div>
+
+            <div class="tp-rect-hub">
+              <span class="tp-rect-name">Zigment</span>
+              <div class="tp-rect-divider"></div>
+              <span class="tp-rect-sub">Conversation<br>Graph</span>
+            </div>
+          </div>
+        </div>
+        <div class="tp-caption tp-caption-conn">Connected. One context thread. Every interaction informs the next. Nothing falls through.</div>
+      </div>
+    </div>
+
+    <div class="tp-bottom">One prospect. One thread. Full context from first touch to conversion.</div>
+  </div>
+
+  <!-- S5: WHO IS USING IT -->
+  <div class="slide" data-slide="4">
+    <div class="kicker">WHO'S USING IT</div>
+    <div class="display" style="font-size: clamp(24px, 2.6vw, 38px); margin-bottom: 36px;">50+ customers. Growth companies to <em>global enterprises.</em></div>
+
+    <div class="cust-tier-1">
+      <span class="ct1">Tata Motors</span>
+      <span class="ct1">Bajaj Auto</span>
+      <span class="ct1">Nova IVF</span>
+      <span class="ct1">Bluestone</span>
+      <span class="ct1">Godrej Properties</span>
+      <span class="ct1">Grupo Uma</span>
+      <span class="ct1">Motherhood Hospitals</span>
+      <span class="ct1">Kauvery Hospitals</span>
+    </div>
+
+    <div class="cust-tier-2">
+      <span class="ct2">Midtown Athletic</span>
+      <span class="ct2">Scripbox</span>
+      <span class="ct2">AFP.org</span>
+      <span class="ct2">Give.org</span>
+      <span class="ct2">CordLife</span>
+      <span class="ct2">Vedantu</span>
+      <span class="ct2">Spinny</span>
+      <span class="ct2">Ugro Capital</span>
+    </div>
+
+    <div class="cust-tier-3">
+      <span class="ct3">Dr Batra's</span>
+      <span class="ct3">Savvy Group</span>
+      <span class="ct3">Qubo</span>
+      <span class="ct3">Biopeak</span>
+      <span class="ct3">Iris Jewels</span>
+      <span class="ct3">Ketto</span>
+      <span class="ct3">AINU Hospitals</span>
+      <span class="ct3">Tricog</span>
+      <span class="ct3">Casagrand</span>
+      <span class="ct3">Flipspaces</span>
+      <span class="ct3">Trinkerr</span>
+      <span class="ct-more">and more…</span>
+    </div>
+
+    <div class="cust-verts">
+      <span class="cv">Healthcare</span>
+      <span class="cv">Automotive</span>
+      <span class="cv">Fintech</span>
+      <span class="cv">E-Commerce</span>
+      <span class="cv">Real Estate</span>
+      <span class="cv">Non-Profit</span>
+      <span class="cv">Fitness</span>
+    </div>
+  </div>
+
+  <!-- S5: CUSTOMER RESULTS -->
+  <div class="slide" data-slide="5">
+    <div class="kicker">CUSTOMER IMPACT</div>
+    <div class="display-sm" style="margin-bottom: 32px;">The numbers <em>speak.</em></div>
+    <div class="res-grid">
+      <div class="res-card">
+        <h3>Nova IVF</h3>
+        <div class="tag">Healthcare · 88 locations</div>
+        <div class="m-row"><span class="m-num">38%</span><span class="m-text">higher marketing conversion</span></div>
+        <div class="m-row"><span class="m-num">90%</span><span class="m-text">reduction in human effort</span></div>
+        <div class="m-row"><span class="m-num">40%</span><span class="m-text">lower cost per consultation</span></div>
+      </div>
+      <div class="res-card">
+        <h3>Bajaj Auto</h3>
+        <div class="tag">Automotive · 3 countries</div>
+        <div class="m-row"><span class="m-num">30%</span><span class="m-text">uplift in test ride bookings</span></div>
+        <div class="m-row"><span class="m-num">55%</span><span class="m-text">CAC reduction in dealership visits</span></div>
+      </div>
+      <div class="res-card">
+        <h3>Bluestone</h3>
+        <div class="tag">Jewelry · 300+ stores · 117 cities</div>
+        <div class="m-row"><span class="m-num">22x</span><span class="m-text">ROAS (100% uplift)</span></div>
+        <div class="m-row"><span class="m-num">70%</span><span class="m-text">lower CAC on Meta paid media</span></div>
+        <div class="m-row"><span class="m-num">90m→60s</span><span class="m-text">customer reach-out time</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S6: REVENUE EXPANSION / NRR -->
+  <div class="slide" data-slide="6">
+    <div class="kicker">NET REVENUE RETENTION · 200%+</div>
+    <div class="display-sm" style="margin-bottom: 32px;">Customers don't renew. They <em>multiply.</em></div>
+
+    <div style="max-width: 680px;">
+      <div class="exp-group">
+        <div class="exp-name">Nova IVF</div>
+        <div class="exp-row">
+          <div class="exp-lbl">Post Pilot</div>
+          <div class="exp-track"><div class="exp-fill bl" style="width: 20%;"></div></div>
+          <div class="exp-v">$36K</div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-lbl">Present (min. guarantee)</div>
+          <div class="exp-track"><div class="exp-fill bl" style="width: 45%;"></div></div>
+          <div class="exp-v hi">$70K</div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-lbl">Expected (next 6 months)</div>
+          <div class="exp-track"><div class="exp-fill bl" style="width: 75%;"></div></div>
+          <div class="exp-v hi">$120K</div>
+        </div>
+      </div>
+
+      <div class="exp-group">
+        <div class="exp-name">Bajaj Auto</div>
+        <div class="exp-row">
+          <div class="exp-lbl">Spain (1 market)</div>
+          <div class="exp-track"><div class="exp-fill ru" style="width: 15%;"></div></div>
+          <div class="exp-v">$40K</div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-lbl">+ Portugal · Now</div>
+          <div class="exp-track"><div class="exp-fill ru" style="width: 23%;"></div></div>
+          <div class="exp-v hi">$60K</div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-lbl">12 more markets quoted</div>
+          <div class="exp-track"><div class="exp-fill ru" style="width: 100%;"></div></div>
+          <div class="exp-v hi">$260K</div>
+        </div>
+      </div>
+
+      <div class="exp-group">
+        <div class="exp-name">Tata Motors</div>
+        <div class="exp-row">
+          <div class="exp-lbl">Pilot</div>
+          <div class="exp-track"><div class="exp-fill gr" style="width: 8%;"></div></div>
+          <div class="exp-v">Pilot</div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-lbl">Network scaling · Now</div>
+          <div class="exp-track"><div class="exp-fill gr" style="width: 30%;"></div></div>
+          <div class="exp-v hi">$60K</div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-lbl">Expanding use cases</div>
+          <div class="exp-track"><div class="exp-fill gr" style="width: 70%;"></div></div>
+          <div class="exp-v hi">$200K+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S7: STORY SO FAR -->
+  <div class="slide" data-slide="7">
+    <div class="kicker">THE STORY SO FAR</div>
+    <div class="display-sm" style="margin-bottom: 36px;">$700K raised. <em>Here's where we are.</em></div>
+    <div class="story-grid">
+      <div class="story-card">
+        <div class="val">$800K ARR</div>
+        <div class="desc">Crossed in under 12 months</div>
+      </div>
+      <div class="story-card">
+        <div class="val">50+ Active</div>
+        <div class="desc">Customers live on the platform</div>
+      </div>
+      <div class="story-card">
+        <div class="val">Enterprise Logos</div>
+        <div class="desc">Bajaj, Tata, Midtown Athletics</div>
+      </div>
+      <div class="story-card">
+        <div class="val">META India</div>
+        <div class="desc">GTM via Meta & agency partnerships</div>
+      </div>
+      <div class="story-card">
+        <div class="val">Conversation Graph</div>
+        <div class="desc">Proprietary product IP — core moat</div>
+      </div>
+      <div class="story-card">
+        <div class="val">8 Countries</div>
+        <div class="desc">Deployed across 4 continents</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S8: CORE INSIGHT -->
+  <div class="slide" data-slide="8">
+    <div class="kicker">THE DIFFERENCE</div>
+    <div class="display" style="font-size: clamp(30px, 3.4vw, 50px); margin-bottom: 12px;">The Conversation as the <em>Primary Object.</em></div>
+    <p class="body" style="margin-bottom: 32px;">Every other system treats the lead record as the center. Conversations are afterthoughts — notes, logs, attachments. Zigment inverts this.</p>
+
+    <div class="compare">
+      <div class="compare-box">
+        <h4>Traditional</h4>
+        <p>Lead record at the center. Conversations are artifacts. Context is scattered across disconnected tools.</p>
+      </div>
+      <div class="compare-box zig">
+        <h4>Zigment</h4>
+        <p>Conversation at the center. Intent, sentiment, actions, revenue — all derived from it. Context is the system.</p>
+      </div>
+    </div>
+
+    <div class="sp-md"></div>
+    <p class="note-lg">Conversation Graph is the system of record for the conversational world.</p>
+  </div>
+
+  <!-- S9: DEFENSIBILITY -->
+  <div class="slide" data-slide="9">
+    <div class="kicker">DEFENSIBILITY</div>
+    <div class="display-sm" style="margin-bottom: 32px;">Why this is <em>hard to replicate.</em></div>
+
+    <div class="def-stack">
+      <div class="def-card">
+        <div class="who">vs. Incumbents — Salesforce, HubSpot</div>
+        <p>This is a foundational change — not an incremental product update. Changing the primary data object requires rethinking core technology, business model, and organizational structure.</p>
+      </div>
+      <div class="def-card">
+        <div class="who">vs. LLM Providers</div>
+        <p>Too close to outcome ownership. Customers need a platform that works for them — not one that competes for the relationship and the data.</p>
+      </div>
+      <div class="def-card">
+        <div class="who">vs. New Entrants</div>
+        <p>This requires working with live customer data in real business environments. It cannot be built as an idea-led, demo-stage product.</p>
+      </div>
+    </div>
+
+    <div class="def-footer">We aim to maintain a market lead of 6–12 months, constantly.</div>
+  </div>
+
+  <!-- S10: PLATFORM -->
+  <div class="slide" data-slide="10">
+    <div class="kicker">PLATFORM</div>
+    <div class="display" style="font-size: clamp(28px, 2.8vw, 42px); margin-bottom: 10px;">Agentic Infra built for <em>Modern Revenue Teams.</em></div>
+    <p class="body" style="margin-bottom: 28px;">Growth for marketing. Clarity for RevOps. One platform.</p>
+
+    <div class="plat-grid">
+      <div class="plat-card">
+        <h4>Agent Workflow Builder</h4>
+        <p>Drag-and-drop. Knowledge bases, actions, behavior.</p>
+      </div>
+      <div class="plat-card">
+        <h4>Guardrails & Evals</h4>
+        <p>Hallucination prevention. Compliance. Clinical guardrails.</p>
+      </div>
+      <div class="plat-card">
+        <h4>Testing Framework</h4>
+        <p>Unit tests for agents before they go live.</p>
+      </div>
+      <div class="plat-card">
+        <h4>40+ Integrations</h4>
+        <p>Salesforce, HubSpot, Zoho, WhatsApp, Snowflake.</p>
+      </div>
+      <div class="plat-card">
+        <h4>Multi-LLM</h4>
+        <p>OpenAI + Claude + LLaMA. Not locked in.</p>
+      </div>
+      <div class="plat-card">
+        <h4>No-Code</h4>
+        <p>Customers and agencies build directly.</p>
+      </div>
+    </div>
+
+    <div class="badge-row">
+      <span class="badge">SOC 2</span>
+      <span class="badge">ISO 27001</span>
+      <span class="badge">GDPR</span>
+      <span class="badge">HIPAA</span>
+    </div>
+  </div>
+
+  <!-- S11: MARKET -->
+  <div class="slide" data-slide="11">
+    <div class="kicker">MARKET</div>
+    <div class="display">
+      Almost <em>$2 trillion</em> of the global economy revolves around customer conversations. This entire layer is about to be upended by AI.
+    </div>
+    <div class="sp-lg"></div>
+    <p class="note-lg" style="font-size: clamp(20px, 2vw, 26px);">Zigment will be the system of record for this new world.</p>
+  </div>
+
+  <!-- S12: WHY NOW -->
+  <div class="slide" data-slide="12">
+    <div class="kicker">WHY NOW</div>
+    <div class="display" style="font-size: clamp(30px, 3.2vw, 48px); margin-bottom: 40px;">The window is <em>wide open.</em></div>
+
+    <div style="display: flex; flex-direction: column; gap: 28px; max-width: 560px;">
+      <div class="arg-block">
+        <h4>META is betting on us</h4>
+        <p>$100M of business targeted through the Zigment partnership over the next 12 months. We're their infrastructure for conversational ads in India.</p>
+      </div>
+      <div class="arg-block">
+        <h4>Agencies are going AI-first</h4>
+        <p>Agencies want to own the full customer journey — not just clicks. Zigment is the infrastructure that lets them. Our Meta partnership is accelerating these relationships.</p>
+      </div>
+      <div class="arg-block">
+        <h4>Unit economics already work</h4>
+        <p>CAC under 2 months of revenue. The acquisition window is wide open right now — and we intend to move fast.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S13: PATH TO $10M -->
+  <div class="slide" data-slide="13">
+    <div class="kicker">PATH TO $10M</div>
+    <div class="display" style="font-size: clamp(26px, 2.8vw, 42px); margin-bottom: 48px;">Built on three <em>revenue engines.</em></div>
+
+    <div class="stacked-section">
+      <div class="stacked-bar">
+        <div class="seg seg-1">$4M</div>
+        <div class="seg seg-2">$3M</div>
+        <div class="seg seg-3">$3M</div>
+      </div>
+      <div class="stacked-labels">
+        <div class="seg-label seg-label-1">
+          <h4>Account Expansion</h4>
+          <p>Existing customers scaling up</p>
+        </div>
+        <div class="seg-label seg-label-2">
+          <h4>META GTM</h4>
+          <p>Agency channel activation</p>
+        </div>
+        <div class="seg-label seg-label-3">
+          <h4>New Business</h4>
+          <p>Direct sales & partnerships</p>
+        </div>
+      </div>
+      <div class="stacked-total">
+        <span class="st-label">Target ARR</span>
+        <span class="st-amount">$10M</span>
+        <span class="st-date">March 2027</span>
+      </div>
+    </div>
+
+    <div class="traj-section">
+      <div class="traj-label">TRAJECTORY</div>
+      <div class="traj-area">
+        <div class="ch-col">
+          <div class="ch-val">$1M</div>
+          <div class="ch-bar" style="height: 18px;"></div>
+          <div class="ch-lbl">Now</div>
+        </div>
+        <div class="ch-col">
+          <div class="ch-val">$3M</div>
+          <div class="ch-bar" style="height: 54px;"></div>
+          <div class="ch-lbl">Sep '26</div>
+        </div>
+        <div class="ch-col">
+          <div class="ch-val" style="color: var(--rust);">$10M</div>
+          <div class="ch-bar" style="height: 120px;"></div>
+          <div class="ch-lbl">Mar '27</div>
+        </div>
+        <div class="ch-col">
+          <div class="ch-val" style="color: var(--gray-500);">$30M</div>
+          <div class="ch-bar fut" style="height: 180px;"></div>
+          <div class="ch-lbl">Dec '27</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S15: TEAM -->
+  <div class="slide" data-slide="14">
+    <div class="kicker">TEAM & INVESTORS</div>
+    <div class="display" style="font-size: clamp(26px, 2.8vw, 40px); margin-bottom: 44px;">The people <em>behind it.</em></div>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-photo" style="background-image: url('https://cdn.zigment.ai/assets/dikshantdave.jpg');"></div>
+        <div class="team-name">Dikshant Dave</div>
+        <div class="team-role">CEO</div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo" style="background-image: url('https://cdn.zigment.ai/assets/karmapandya.jpg');"></div>
+        <div class="team-name">Karma Pandya</div>
+        <div class="team-role">CTO</div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo" style="background-image: url('https://zigment.ai/assets/imgs/aboutus/naveenpicardo.png');"></div>
+        <div class="team-name">Naveen Picardo</div>
+        <div class="team-role">Delivery & Success</div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo" style="background-image: url('https://zigment.ai/assets/imgs/aboutus/caleb.png');"></div>
+        <div class="team-name">Caleb Peter</div>
+        <div class="team-role">Sales</div>
+      </div>
+    </div>
+
+    <div class="investors-section">
+      <div class="investors-label">SEED INVESTORS</div>
+      <div class="investor-row">
+        <span class="investor-tag primary">Accel Partners</span>
+        <span class="investor-tag">Larry Braitman</span>
+        <span class="investor-tag">Abhishek Goyal</span>
+        <span class="investor-tag">Venk Krishnan</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- S15: THE ASK -->
+  <div class="slide" data-slide="15">
+    <div class="kicker" style="color: var(--black);">RAISING</div>
+    <div class="ask-num">Series A</div>
+    <div class="sp-sm"></div>
+    <p class="body" style="font-size: 20px; color: var(--gray-700);">To scale the category-leading platform for conversational revenue.</p>
+    <div class="ask-grid">
+      <div class="ask-item">Platform<br>engineering</div>
+      <div class="ask-item">Proprietary<br>LLM</div>
+      <div class="ask-item">Sales<br>expansion</div>
+      <div class="ask-item">The march to<br><strong>$100MM ARR</strong></div>
+    </div>
+    <div class="sp-xl"></div>
+    <p class="note-lg" style="font-size: 20px;">Join us in building the infrastructure for the next era of customer revenue.</p>
+    <div style="position: absolute; bottom: 52px; left: 96px;">
+      <span class="note">dikshant@zigment.ai</span>
+    </div>
+  </div>
+
+  <!-- APPENDIX: HOW IT WORKS -->
+  <div class="slide" data-slide="16">
+    <div class="kicker">APPENDIX · HOW IT WORKS</div>
+    <div class="display" style="font-size: clamp(22px, 2.4vw, 34px); margin-bottom: 36px;">Channels in. Context through. <em>Revenue out.</em></div>
+
+    <div style="max-width: 880px; display: flex; flex-direction: column; gap: 0;">
+      <!-- TOP ROW -->
+      <div style="display: flex; align-items: stretch;">
+        <!-- Channels -->
+        <div style="width: 140px; flex-shrink: 0; display: flex; flex-direction: column;">
+          <div class="appendix-col-header">Channels</div>
+          <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+            <div class="appx-ch">💬 WhatsApp</div>
+            <div class="appx-ch">📸 Instagram</div>
+            <div class="appx-ch">✉️ SMS</div>
+            <div class="appx-ch">📞 Voice</div>
+            <div class="appx-ch">🌐 Web</div>
+          </div>
+        </div>
+
+        <div style="width: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--warm-300); padding-top: 22px;">→</div>
+
+        <!-- Platform -->
+        <div style="flex: 1; display: flex; flex-direction: column;">
+          <div class="appendix-col-header">Zigment Platform</div>
+          <div style="background: var(--black); color: var(--white); padding: 22px 28px; flex: 1; display: flex; flex-direction: column; gap: 8px;">
+            <div style="font-family: 'Libre Baskerville', serif; font-weight: 700; font-size: 18px; margin-bottom: 6px;">Zigment</div>
+            <div style="display: flex; gap: 8px;">
+              <div class="appx-chip">Agent Engine</div>
+              <div class="appx-chip">Workflows</div>
+              <div class="appx-chip">Guardrails</div>
+            </div>
+            <div style="display: flex; gap: 6px; margin-top: 4px;">
+              <span class="appx-llm">OpenAI</span>
+              <span class="appx-llm">Claude</span>
+              <span class="appx-llm">LLaMA</span>
+              <span class="appx-llm">Custom</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="width: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--warm-300); padding-top: 22px;">→</div>
+
+        <!-- Outcomes -->
+        <div style="width: 150px; flex-shrink: 0; display: flex; flex-direction: column;">
+          <div class="appendix-col-header">Outcomes</div>
+          <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+            <div class="appx-out"><strong>Qualify</strong><br><span>Score & filter leads</span></div>
+            <div class="appx-out"><strong>Route</strong><br><span>To sales or automation</span></div>
+            <div class="appx-out"><strong>Convert</strong><br><span>Bookings & purchases</span></div>
+            <div class="appx-out"><strong>Learn</strong><br><span>Closed-loop optimization</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONVERSATION GRAPH LAYER -->
+      <div style="background: var(--black); padding: 14px 28px; display: flex; align-items: center; gap: 16px; margin-top: 3px;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); white-space: nowrap;">Conversation Graph</span>
+        <div style="flex: 1; height: 2px; background: linear-gradient(90deg, var(--rust), rgba(184,67,47,0.3), var(--rust), rgba(184,67,47,0.3), var(--rust)); border-radius: 1px;"></div>
+        <span style="font-size: 12px; color: rgba(255,255,255,0.45); white-space: nowrap;">Context layer across every interaction</span>
+      </div>
+    </div>
+
+    <!-- CONNECTED SYSTEMS -->
+    <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-500); margin-top: 16px; margin-bottom: 8px;">Connected Systems</div>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; max-width: 880px;">
+      <span class="appx-sys">Salesforce</span>
+      <span class="appx-sys">HubSpot</span>
+      <span class="appx-sys">Zoho</span>
+      <span class="appx-sys">Snowflake</span>
+      <span class="appx-sys">Shopify</span>
+      <span class="appx-sys">Segment</span>
+      <span class="appx-sys">WhatsApp API</span>
+      <span class="appx-sys">Meta Ads</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn" onclick="go(-1)">←</button>
+  <div class="sn" id="sn">1 / 17</div>
+  <button class="nav-btn" onclick="go(1)">→</button>
+</div>
+
+<div class="hint"><kbd>←</kbd> <kbd>→</kbd></div>
+
+<script>
+  let c = 0;
+  const s = document.querySelectorAll('.slide');
+  const t = s.length;
+
+  function show(n) {
+    s[c].classList.remove('active');
+    c = Math.max(0, Math.min(n, t - 1));
+    s[c].classList.add('active');
+    document.getElementById('sn').textContent = `${c + 1} / ${t}`;
+    document.getElementById('prog').style.width = `${((c + 1) / t) * 100}%`;
+  }
+
+  function go(d) { show(c + d); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const d = tx - e.changedTouches[0].clientX;
+    if (Math.abs(d) > 50) go(d > 0 ? 1 : -1);
+  });
+
+  show(0);
+</script>
+
+</body>
+</html>
